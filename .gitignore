@@ -1,0 +1,4 @@
+# Visual Studio temp files and crap
+.vs/
+bin/
+obj/
