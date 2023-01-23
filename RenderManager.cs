@@ -12,6 +12,11 @@ namespace ConsoleGame
 		private int bufferWidth;
 		private int bufferHeight;
 
+		public int CameraPosX { get; set; }
+		public int CameraPosY { get; set; }
+
+
+
 		public RenderManager(int backBufferWidth, int backBufferHeight)
 		{
 			this.backBuffer = new char[backBufferWidth * backBufferHeight];
@@ -22,8 +27,21 @@ namespace ConsoleGame
 			CameraPosY = 0;
 		}
 
+		private void handleResize(int newWidth, int newHeight)
+		{
+			this.backBuffer = new char[newWidth * newHeight];
+			this.bufferWidth = newWidth;
+			this.bufferHeight = newHeight;
+		}
+
 		public void clear()
 		{
+			// Console window changed size.
+			if (Console.WindowWidth != this.bufferWidth || Console.WindowHeight != this.bufferHeight)
+			{
+				this.handleResize(Console.WindowWidth, Console.WindowHeight);
+			}
+
 			// Fill buffer with spaces.
 			Array.Fill(backBuffer, ' ');
 
@@ -37,23 +55,10 @@ namespace ConsoleGame
 			Console.Write(backBuffer);
 		}
 
-		public int CameraPosX { get; set; }
-		public int CameraPosY { get; set; }
-
-		public bool isOutOfBoundsX(int posX)
-		{
-			return posX < 0 || posX >= bufferWidth;
-		}
-
-		public bool isOutOfBoundsY(int posY)
-		{
-			return posY < 0 || posY >= bufferHeight;
-		}
-
 		public void renderHLine(int posX, int posY, int length, char c)
 		{
 			// Transform point.
-			posX -= CameraPosX; posY += CameraPosY;
+			worldToConsole(ref posX, ref posY);
 
 			if (isOutOfBoundsY(posY)) return;
 
@@ -79,6 +84,26 @@ namespace ConsoleGame
 
 				backBuffer[bufferWidth * posY + x] = text[i];
 			}
+		}
+
+
+		
+		// Helper functions.
+		public bool isOutOfBoundsX(int posX)
+		{
+			return posX < 0 || posX >= bufferWidth;
+		}
+
+		public bool isOutOfBoundsY(int posY)
+		{
+			return posY < 0 || posY >= bufferHeight;
+		}
+
+		public void worldToConsole(ref int posX, ref int posY)
+		{
+			// Move two characters along X to make square movements.
+			posX -= 2 * CameraPosX;
+			posY += CameraPosY;
 		}
 	}
 }
