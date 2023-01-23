@@ -1,4 +1,7 @@
 # Visual Studio temp files and crap
 .vs/
+.vscode/
 bin/
 obj/
+UpgradeLog.htm
+Backup/
