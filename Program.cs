@@ -6,38 +6,49 @@ namespace ConsoleGame
 	{
 		static void Main(string[] args)
 		{
-            ConsoleKey lastKey = 0;
+			ConsoleKey lastKey = 0;
 
-            // Game loop.
-            while (true)
+			RenderManager renderManager = new RenderManager(Console.WindowWidth, Console.WindowHeight);
+
+			// Game loop.
+			while (true)
 			{
 				// Key input.
-                while (Console.KeyAvailable)
+				while (Console.KeyAvailable)
 				{
 					lastKey = Console.ReadKey().Key;
 					if (lastKey == ConsoleKey.A)
 					{
 						return;
 					}
+
+					switch (lastKey)
+					{
+						case ConsoleKey.UpArrow:
+							renderManager.CameraPosY++;
+							break;
+						case ConsoleKey.DownArrow:
+							renderManager.CameraPosY--;
+							break;
+						case ConsoleKey.LeftArrow:
+							renderManager.CameraPosX--;
+							break;
+						case ConsoleKey.RightArrow:
+							renderManager.CameraPosX++;
+							break;
+					}
 				}
 
 				// Render.
-                Console.CursorVisible = false;
+				renderManager.clear();
 
-                Console.SetCursorPosition(0, 0);
-				for (int i = 0; i < Console.WindowWidth; ++i)
-				{
-					Console.Write("#");
-				}
+				renderManager.renderHLine(0, 0, Console.WindowWidth, '#');
+				renderManager.renderHLine(0, Console.WindowHeight - 1, Console.WindowWidth, '#');
 
-                Console.SetCursorPosition(10, 10);
-				Console.Write("You pressed " + lastKey.ToString() + "!");
+				string text = "You pressed " + lastKey.ToString() + "!";
+				renderManager.renderString(20, 10, text);
 
-                Console.SetCursorPosition(0, Console.WindowHeight - 1);
-				for (int i = 0; i < Console.WindowWidth - 1; ++i)
-				{
-					Console.Write("#");
-				}
+				renderManager.swapBuffers();
 			}
 		}
 	}
