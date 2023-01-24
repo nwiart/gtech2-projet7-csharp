@@ -1,110 +1,55 @@
-﻿using System;
+﻿using ConsoleGame.State;
+using System;
+using System.Runtime.InteropServices;
 
 namespace ConsoleGame
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            ConsoleKey lastKey = 0;
+	class Program
+	{
+		public static RenderManager RenderManager;
+		public static IState? currentState;
+		public static IState? nextState;
 
-            RenderManager renderManager = new RenderManager(Console.WindowWidth, Console.WindowHeight);
+		public static void OpenScene(IState s)
+		{
+			nextState = s;
+		}
 
-            // Game loop.
-            while (true)
-            {
-                // Key input.
-                while (Console.KeyAvailable)
-                {
-                    lastKey = Console.ReadKey().Key;
-                    if (lastKey == ConsoleKey.A)
-                    {
-                        return;
-                    }
+		static void Main(string[] args)
+		{
+			RenderManager = new RenderManager(Console.WindowWidth, Console.WindowHeight);
 
-                    switch (lastKey)
-                    {
-                        case ConsoleKey.UpArrow:
-                            renderManager.CameraPosY--;
-                            break;
-                        case ConsoleKey.DownArrow:
-                            renderManager.CameraPosY++;
-                            break;
-                        case ConsoleKey.LeftArrow:
-                            renderManager.CameraPosX--;
-                            break;
-                        case ConsoleKey.RightArrow:
-                            renderManager.CameraPosX++;
-                            break;
-                    }
-                }
+			currentState = new StateMainMenu();
+			nextState = null;
 
-                // Render.
-                renderManager.Clear();
+			Sprite.LoadSprites();
 
-                // renderManager.RenderHLine(0, 0, Console.WindowWidth, '#');
-                // renderManager.RenderHLine(0, Console.WindowHeight - 1, Console.WindowWidth, '#');
+			Win32.SetConsoleTitle("ConsoleGame");
 
-                string CreateMap()
-                {
-                    string map = "";
-                    for (int i = 0; i < 200; i++)
-                    {
-                        for (int j = 0; j < 200; j++)
-                        {
-                            if (i == 5 && j == 5)
-                            {
-                                map += "@";
-                            }
-                            else if (i == 10 && j == 10)
-                            {
-                                map += "!";
-                            }
-                            else if (i > 20 && i < 30 && j > 20 && j < 30)
-                            {
-                                map += "+";
-                            }
-                            else if (i > 30 && i < 40 && j > 30 && j < 40)
-                            {
-                                map += "?";
-                            }
-                            else if (i > 40 && i < 50 && j > 40 && j < 50)
-                            {
-                                map += "~";
-                            }
-                            else if (i > 50 && i < 60 && j > 50 && j < 60)
-                            {
-                                map += "X";
-                            }
-                            else
-                            {
-                                map += "*";
-                            }
-                        }
-                    }
-                    return map;
-                }
-                renderManager.RenderImage(0, 0, 200, 200, CreateMap());
-                string pl =
-                    "  @  " +
-                    " /|\\ " +
-                    "/ | \\" +
-                    " / \\ " +
-                    "/   \\";
+			// Game loop.
+			while (true)
+			{
+				// Key input.
+				while (Console.KeyAvailable)
+				{
+					currentState.KeyPress(Console.ReadKey().Key);
+				}
 
-                Console.ForegroundColor = ConsoleColor.Blue;
+				// Render.
+				RenderManager.Clear();
+				currentState.Render();
+				RenderManager.SwapBuffers();
 
-                renderManager.RenderImage(renderManager.CameraPosX, renderManager.CameraPosY, 5, 5, pl);
+				Thread.Sleep(20);
 
-                string text = "You pressed " + lastKey.ToString() + "!";
-                renderManager.RenderString(20, 10, text);
-
-                renderManager.RenderString(2, Console.WindowHeight - 2, "© ConsoleGame 2023");
-
-                renderManager.SwapBuffers();
-
-                Thread.Sleep(1);
-            }
-        }
-    }
+				if (nextState != null)
+				{
+					currentState.Leave();
+					currentState = nextState;
+					nextState = null;
+					currentState.Enter();
+				}
+			}
+		}
+	}
 }

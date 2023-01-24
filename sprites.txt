@@ -1,0 +1,18 @@
+sprite Tree
+0a  /\  
+0a /  \ 
+0a /  \ 
+0a/    \
+06  ▓▒  
+
+sprite BlueTree
+03  /\  
+03 /  \ 
+03 /  \ 
+03/    \
+0d  ▓▒  
+
+sprite WARRIOR
+0f Ö_
+0c/| 
+0b/ \

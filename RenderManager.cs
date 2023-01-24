@@ -9,8 +9,11 @@ namespace ConsoleGame
 	internal class RenderManager
 	{
 		private char[] _backBuffer;
+		private short[] _backColors;
 		private int _bufferWidth;
 		private int _bufferHeight;
+
+		public short CurrentColor { get; set; }
 
 		public int CameraPosX { get; set; }
 		public int CameraPosY { get; set; }
@@ -20,6 +23,7 @@ namespace ConsoleGame
 		public RenderManager(int backBufferWidth, int backBufferHeight)
 		{
 			_backBuffer = new char[backBufferWidth * backBufferHeight];
+			_backColors = new short[backBufferWidth * backBufferHeight];
 			_bufferWidth = backBufferWidth;
 			_bufferHeight = backBufferHeight;
 
@@ -30,6 +34,7 @@ namespace ConsoleGame
 		private void handleResize(int newWidth, int newHeight)
 		{
 			_backBuffer = new char[newWidth * newHeight];
+			_backColors = new short[newWidth * newHeight];
 			_bufferWidth = newWidth;
 			_bufferHeight = newHeight;
 		}
@@ -44,6 +49,7 @@ namespace ConsoleGame
 
 			// Fill buffer with spaces.
 			Array.Fill(_backBuffer, ' ');
+			Array.Fill(_backColors, (short) 0x0f);
 
 			Console.CursorVisible = false;
 		}
@@ -53,6 +59,11 @@ namespace ConsoleGame
 			// Write back buffer to console.
 			Console.SetCursorPosition(0, 0);
 			Console.Write(_backBuffer);
+
+			// Submit colors.
+			IntPtr stdHandle = Win32.GetStdHandle(Win32.STD_OUTPUT_HANDLE);
+			int num = 0;
+			Win32.WriteConsoleOutputAttribute(stdHandle, _backColors, _bufferWidth * _bufferHeight, new Win32.COORD(0, 0), ref num);
 		}
 
 		public void SetForegroundColor(ConsoleColor c)
@@ -106,8 +117,20 @@ namespace ConsoleGame
 					if (ch != ' ')
 					{
 						_backBuffer[baseIndexY + indexX] = ch;
+						_backColors[baseIndexY + indexX] = CurrentColor;
 					}
 				}
+			}
+		}
+
+		public void RenderSprite(int posX, int posY, Sprite sprite)
+		{
+			for (int i = 0; i < sprite.Height; ++i)
+			{
+				CurrentColor = (short) sprite.GetRowColor(i);
+
+				string row = sprite.GetRow(i);
+				RenderImage(posX, posY + i, row.Length, 1, row);
 			}
 		}
 
