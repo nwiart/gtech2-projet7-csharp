@@ -71,6 +71,23 @@ namespace ConsoleGame
 			}
 		}
 
+		public void renderImage(int posX, int posY, int sizeX, int sizeY, string data)
+		{
+			// Transform point.
+			worldToConsole(ref posX, ref posY);
+
+			for (int r = 0; r < sizeY; ++r)
+			{
+				int baseIndex = (posY + r) * bufferWidth + posX;
+				for (int c = 0; c < sizeX; ++c)
+				{
+					char ch = data[r * sizeX + c];
+					if (ch != ' ')
+						backBuffer[baseIndex + c] = data[r * sizeX + c];
+				}
+			}
+		}
+
 		public void renderString(int posX, int posY, string text)
 		{
 			// Out of bounds check.
@@ -102,8 +119,8 @@ namespace ConsoleGame
 		public void worldToConsole(ref int posX, ref int posY)
 		{
 			// Move two characters along X to make square movements.
-			posX -= 2 * CameraPosX;
-			posY += CameraPosY;
+			posX = posX * 2 - CameraPosX * 2 + bufferWidth / 2;
+			posY = posY - CameraPosY + bufferHeight / 2;
 		}
 	}
 }
