@@ -1,2 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram /> 
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ConsoleGame.Program">
+    <Position X="5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleGame.RenderManager">
+    <Position X="6.75" Y="2" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAICAAAIAAABAACAQAAAAAIQAAAAIgAAQAIBBIBA=</HashCode>
+      <FileName>RenderManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleGame.Sprite">
+    <Position X="10.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAABAAAEACAAAQAAGAAAAAAQIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="12" />
+</ClassDiagram>
