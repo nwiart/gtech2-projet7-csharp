@@ -12,7 +12,7 @@ namespace ConsoleGame
 		private int _bufferWidth;
 		private int _bufferHeight;
 
-		private ConsoleColor
+		private ConsoleColor color;
 
 		public int CameraPosX { get; set; }
 		public int CameraPosY { get; set; }
