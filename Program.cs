@@ -2,66 +2,110 @@
 
 namespace ConsoleGame
 {
-	class Program
-	{
-		static void Main(string[] args)
-		{
-			ConsoleKey lastKey = 0;
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ConsoleKey lastKey = 0;
 
-			RenderManager renderManager = new RenderManager(Console.WindowWidth, Console.WindowHeight);
+            RenderManager renderManager = new RenderManager(Console.WindowWidth, Console.WindowHeight);
 
-			// Game loop.
-			while (true)
-			{
-				// Key input.
-				while (Console.KeyAvailable)
-				{
-					lastKey = Console.ReadKey().Key;
-					if (lastKey == ConsoleKey.A)
-					{
-						return;
-					}
+            // Game loop.
+            while (true)
+            {
+                // Key input.
+                while (Console.KeyAvailable)
+                {
+                    lastKey = Console.ReadKey().Key;
+                    if (lastKey == ConsoleKey.A)
+                    {
+                        return;
+                    }
 
-					switch (lastKey)
-					{
-						case ConsoleKey.UpArrow:
-							renderManager.CameraPosY--;
-							break;
-						case ConsoleKey.DownArrow:
-							renderManager.CameraPosY++;
-							break;
-						case ConsoleKey.LeftArrow:
-							renderManager.CameraPosX--;
-							break;
-						case ConsoleKey.RightArrow:
-							renderManager.CameraPosX++;
-							break;
-					}
-				}
+                    switch (lastKey)
+                    {
+                        case ConsoleKey.UpArrow:
+                            renderManager.CameraPosY--;
+                            break;
+                        case ConsoleKey.DownArrow:
+                            renderManager.CameraPosY++;
+                            break;
+                        case ConsoleKey.LeftArrow:
+                            renderManager.CameraPosX--;
+                            break;
+                        case ConsoleKey.RightArrow:
+                            renderManager.CameraPosX++;
+                            break;
+                    }
+                }
 
-				// Render.
-				renderManager.Clear();
+                // Render.
+                renderManager.Clear();
 
-				renderManager.RenderHLine(0, 0, Console.WindowWidth, '#');
-				renderManager.RenderHLine(0, Console.WindowHeight - 1, Console.WindowWidth, '#');
+                // renderManager.RenderHLine(0, 0, Console.WindowWidth, '#');
+                // renderManager.RenderHLine(0, Console.WindowHeight - 1, Console.WindowWidth, '#');
 
-				string pl =
-					"  @  " +
-					" /|\\ " +
-					"/ | \\" +
-					" / \\ " +
-					"/   \\";
-				renderManager.RenderImage(renderManager.CameraPosX, renderManager.CameraPosY, 5, 5, pl);
+                string CreateMap()
+                {
+                    string map = "";
+                    for (int i = 0; i < 200; i++)
+                    {
+                        for (int j = 0; j < 200; j++)
+                        {
+                            if (i == 5 && j == 5)
+                            {
+                                map += "@";
+                            }
+                            else if (i == 10 && j == 10)
+                            {
+                                map += "!";
+                            }
+                            else if (i > 20 && i < 30 && j > 20 && j < 30)
+                            {
+                                map += "+";
+                            }
+                            else if (i > 30 && i < 40 && j > 30 && j < 40)
+                            {
+                                map += "?";
+                            }
+                            else if (i > 40 && i < 50 && j > 40 && j < 50)
+                            {
+                                map += "~";
+                            }
+                            else if (i > 50 && i < 60 && j > 50 && j < 60)
+                            {
+                                map += "X";
+                            }
+                            else
+                            {
+                                map += "*";
+                            }
+                        }
+                    }
+                    return map;
+                }
+                renderManager.RenderImage(renderManager.CameraPosX, renderManager.CameraPosY, 200, 200, CreateMap());
 
-				string text = "You pressed " + lastKey.ToString() + "!";
-				renderManager.RenderString(20, 10, text);
+                string pl =
+                    "  @  " +
+                    " /|\\ " +
+                    "/ | \\" +
+                    " / \\ " +
+                    "/   \\";
 
-				renderManager.RenderString(2, Console.WindowHeight - 2, "ConsoleGame 2023");
+                Console.ForegroundColor = ConsoleColor.Blue;
 
-				renderManager.SwapBuffers();
+                renderManager.RenderImage(renderManager.CameraPosX, renderManager.CameraPosY, 5, 5, pl);
 
-				Thread.Sleep(1);
-			}
-		}
-	}
+                string text = "You pressed " + lastKey.ToString() + "!";
+                renderManager.RenderString(20, 10, text);
+
+                renderManager.RenderString(2, Console.WindowHeight - 2, "© ConsoleGame 2023");
+
+                renderManager.SwapBuffers();
+
+                Thread.Sleep(1);
+            }
+        }
+    }
 }
