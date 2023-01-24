@@ -12,6 +12,8 @@ namespace ConsoleGame
 		private int _bufferWidth;
 		private int _bufferHeight;
 
+		private ConsoleColor
+
 		public int CameraPosX { get; set; }
 		public int CameraPosY { get; set; }
 
@@ -55,6 +57,16 @@ namespace ConsoleGame
 			Console.Write(_backBuffer);
 		}
 
+		public void SetForegroundColor(ConsoleColor c)
+		{
+
+		}
+
+		public void SetBackgroundColor(ConsoleColor c)
+		{
+
+		}
+
 		public void RenderHLine(int posX, int posY, int length, char c)
 		{
 			// Transform point.
@@ -78,12 +90,23 @@ namespace ConsoleGame
 
 			for (int r = 0; r < sizeY; ++r)
 			{
-				int baseIndex = (posY + r) * _bufferWidth + posX;
+				// Clip testing Y.
+				if (r < 0) continue;
+				if (r >= _bufferHeight) return;
+
+				// Clip testing X.
+				int baseIndexY = (posY + r) * _bufferWidth;
+
 				for (int c = 0; c < sizeX; ++c)
 				{
+					int indexX = c + posX;
+					if (indexX >= _bufferWidth) continue;
+
 					char ch = data[r * sizeX + c];
 					if (ch != ' ')
-						_backBuffer[baseIndex + c] = data[r * sizeX + c];
+					{
+						_backBuffer[baseIndexY + c + indexX] = data[r * sizeX + c];
+					}
 				}
 			}
 		}
