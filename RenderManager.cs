@@ -43,7 +43,7 @@ namespace ConsoleGame
 			}
 
 			// Fill buffer with spaces.
-			Array.Fill(backBuffer, ' ');
+			Array.Fill(_backBuffer, ' ');
 
 			Console.CursorVisible = false;
 		}
@@ -52,7 +52,7 @@ namespace ConsoleGame
 		{
 			// Write back buffer to console.
 			Console.SetCursorPosition(0, 0);
-			Console.Write(backBuffer);
+			Console.Write(_backBuffer);
 		}
 
 		public void RenderHLine(int posX, int posY, int length, char c)
