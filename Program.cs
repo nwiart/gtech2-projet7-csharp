@@ -48,9 +48,9 @@ namespace ConsoleGame
                 string CreateMap()
                 {
                     string map = "";
-                    for (int i = 0; i < 120; i++)
+                    for (int i = 0; i < 200; i++)
                     {
-                        for (int j = 0; j < 120; j++)
+                        for (int j = 0; j < 200; j++)
                         {
                             if (i == 5 && j == 5)
                             {
@@ -84,7 +84,7 @@ namespace ConsoleGame
                     }
                     return map;
                 }
-                renderManager.RenderImage(0, 0, 30, 50, CreateMap());
+                renderManager.RenderImage(0, 0, 200, 200, CreateMap());
                 string pl =
                     "  @  " +
                     " /|\\ " +
