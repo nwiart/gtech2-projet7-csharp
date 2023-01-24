@@ -8,9 +8,9 @@ namespace ConsoleGame
 {
 	internal class RenderManager
 	{
-		private char[] backBuffer;
-		private int bufferWidth;
-		private int bufferHeight;
+		private char[] _backBuffer;
+		private int _bufferWidth;
+		private int _bufferHeight;
 
 		public int CameraPosX { get; set; }
 		public int CameraPosY { get; set; }
@@ -19,9 +19,9 @@ namespace ConsoleGame
 
 		public RenderManager(int backBufferWidth, int backBufferHeight)
 		{
-			this.backBuffer = new char[backBufferWidth * backBufferHeight];
-			this.bufferWidth = backBufferWidth;
-			this.bufferHeight = backBufferHeight;
+			_backBuffer = new char[backBufferWidth * backBufferHeight];
+			_bufferWidth = backBufferWidth;
+			_bufferHeight = backBufferHeight;
 
 			CameraPosX = 0;
 			CameraPosY = 0;
@@ -29,17 +29,17 @@ namespace ConsoleGame
 
 		private void handleResize(int newWidth, int newHeight)
 		{
-			this.backBuffer = new char[newWidth * newHeight];
-			this.bufferWidth = newWidth;
-			this.bufferHeight = newHeight;
+			_backBuffer = new char[newWidth * newHeight];
+			_bufferWidth = newWidth;
+			_bufferHeight = newHeight;
 		}
 
-		public void clear()
+		public void Clear()
 		{
 			// Console window changed size.
-			if (Console.WindowWidth != this.bufferWidth || Console.WindowHeight != this.bufferHeight)
+			if (Console.WindowWidth != _bufferWidth || Console.WindowHeight != _bufferHeight)
 			{
-				this.handleResize(Console.WindowWidth, Console.WindowHeight);
+				handleResize(Console.WindowWidth, Console.WindowHeight);
 			}
 
 			// Fill buffer with spaces.
@@ -48,79 +48,79 @@ namespace ConsoleGame
 			Console.CursorVisible = false;
 		}
 
-		public void swapBuffers()
+		public void SwapBuffers()
 		{
 			// Write back buffer to console.
 			Console.SetCursorPosition(0, 0);
 			Console.Write(backBuffer);
 		}
 
-		public void renderHLine(int posX, int posY, int length, char c)
+		public void RenderHLine(int posX, int posY, int length, char c)
 		{
 			// Transform point.
-			worldToConsole(ref posX, ref posY);
+			WorldToConsole(ref posX, ref posY);
 
-			if (isOutOfBoundsY(posY)) return;
+			if (IsOutOfBoundsY(posY)) return;
 
 			for (int i = 0; i < length; ++i)
 			{
 				int x = i + posX;
-				if (isOutOfBoundsX(x)) continue;
+				if (IsOutOfBoundsX(x)) continue;
 
-				backBuffer[bufferWidth * posY + x] = c;
+				_backBuffer[_bufferWidth * posY + x] = c;
 			}
 		}
 
-		public void renderImage(int posX, int posY, int sizeX, int sizeY, string data)
+		public void RenderImage(int posX, int posY, int sizeX, int sizeY, string data)
 		{
 			// Transform point.
-			worldToConsole(ref posX, ref posY);
+			WorldToConsole(ref posX, ref posY);
 
 			for (int r = 0; r < sizeY; ++r)
 			{
-				int baseIndex = (posY + r) * bufferWidth + posX;
+				int baseIndex = (posY + r) * _bufferWidth + posX;
 				for (int c = 0; c < sizeX; ++c)
 				{
 					char ch = data[r * sizeX + c];
 					if (ch != ' ')
-						backBuffer[baseIndex + c] = data[r * sizeX + c];
+						_backBuffer[baseIndex + c] = data[r * sizeX + c];
 				}
 			}
 		}
 
-		public void renderString(int posX, int posY, string text)
+		public void RenderString(int posX, int posY, string text)
 		{
 			// Out of bounds check.
-			if (isOutOfBoundsY(posY)) return;
+			if (IsOutOfBoundsY(posY)) return;
 
 			for (int i = 0; i < text.Length; ++i)
 			{
 				// Out of bounds.
 				int x = i + posX;
-				if (isOutOfBoundsX(x)) continue;
+				if (IsOutOfBoundsX(x)) continue;
 
-				backBuffer[bufferWidth * posY + x] = text[i];
+				_backBuffer[_bufferWidth * posY + x] = text[i];
 			}
 		}
 
 
 		
 		// Helper functions.
-		public bool isOutOfBoundsX(int posX)
+		public bool IsOutOfBoundsX(int posX)
 		{
-			return posX < 0 || posX >= bufferWidth;
+			return posX < 0 || posX >= _bufferWidth;
 		}
 
-		public bool isOutOfBoundsY(int posY)
+		public bool IsOutOfBoundsY(int posY)
 		{
-			return posY < 0 || posY >= bufferHeight;
+			return posY < 0 || posY >= _bufferHeight;
 		}
 
-		public void worldToConsole(ref int posX, ref int posY)
+		public void WorldToConsole(ref int posX, ref int posY)
 		{
 			// Move two characters along X to make square movements.
-			posX = posX * 2 - CameraPosX * 2 + bufferWidth / 2;
-			posY = posY - CameraPosY + bufferHeight / 2;
+			posX = posX * 2 - CameraPosX * 2 + _bufferWidth / 2;
+			posY = posY - CameraPosY + _bufferHeight / 2;
 		}
 	}
 }

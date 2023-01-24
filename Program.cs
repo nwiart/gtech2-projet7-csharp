@@ -40,10 +40,10 @@ namespace ConsoleGame
 				}
 
 				// Render.
-				renderManager.clear();
+				renderManager.Clear();
 
-				renderManager.renderHLine(0, 0, Console.WindowWidth, '#');
-				renderManager.renderHLine(0, Console.WindowHeight - 1, Console.WindowWidth, '#');
+				renderManager.RenderHLine(0, 0, Console.WindowWidth, '#');
+				renderManager.RenderHLine(0, Console.WindowHeight - 1, Console.WindowWidth, '#');
 
 				string pl =
 					"  @  " +
@@ -51,14 +51,14 @@ namespace ConsoleGame
 					"/ | \\" +
 					" / \\ " +
 					"/   \\";
-				renderManager.renderImage(renderManager.CameraPosX, renderManager.CameraPosY, 5, 5, pl);
+				renderManager.RenderImage(renderManager.CameraPosX, renderManager.CameraPosY, 5, 5, pl);
 
 				string text = "You pressed " + lastKey.ToString() + "!";
-				renderManager.renderString(20, 10, text);
+				renderManager.RenderString(20, 10, text);
 
-				renderManager.renderString(2, Console.WindowHeight - 2, "ConsoleGame 2023");
+				renderManager.RenderString(2, Console.WindowHeight - 2, "ConsoleGame 2023");
 
-				renderManager.swapBuffers();
+				renderManager.SwapBuffers();
 
 				Thread.Sleep(1);
 			}
