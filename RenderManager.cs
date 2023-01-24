@@ -12,8 +12,6 @@ namespace ConsoleGame
 		private int _bufferWidth;
 		private int _bufferHeight;
 
-		private ConsoleColor
-
 		public int CameraPosX { get; set; }
 		public int CameraPosY { get; set; }
 
@@ -101,12 +99,13 @@ namespace ConsoleGame
 				for (int c = 0; c < sizeX; ++c)
 				{
 					int indexX = c + posX;
-					if (indexX >= _bufferWidth) continue;
+					if (indexX < 0) continue;
+					if (indexX >= _bufferWidth) break;
 
 					char ch = data[r * sizeX + c];
 					if (ch != ' ')
 					{
-						_backBuffer[baseIndexY + c + indexX] = data[r * sizeX + c];
+						_backBuffer[baseIndexY + indexX] = ch;
 					}
 				}
 			}

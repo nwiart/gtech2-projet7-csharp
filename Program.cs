@@ -52,6 +52,7 @@ namespace ConsoleGame
 					" / \\ " +
 					"/   \\";
 				renderManager.RenderImage(renderManager.CameraPosX, renderManager.CameraPosY, 5, 5, pl);
+				renderManager.RenderImage(0, 0, 5, 5, pl);
 
 				string text = "You pressed " + lastKey.ToString() + "!";
 				renderManager.RenderString(20, 10, text);
