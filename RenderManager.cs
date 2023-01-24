@@ -91,11 +91,12 @@ namespace ConsoleGame
 			for (int r = 0; r < sizeY; ++r)
 			{
 				// Clip testing Y.
-				if (r < 0) continue;
-				if (r >= _bufferHeight) return;
+				int row = r + posY;
+				if (row < 0) continue;
+				if (row >= _bufferHeight) return;
 
 				// Clip testing X.
-				int baseIndexY = (posY + r) * _bufferWidth;
+				int baseIndexY = row * _bufferWidth;
 
 				for (int c = 0; c < sizeX; ++c)
 				{
