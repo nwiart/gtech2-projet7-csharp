@@ -6,21 +6,23 @@ namespace ConsoleGame
 {
 	class Program
 	{
-		public static RenderManager? RenderManager;
-		public static IState? currentState;
-		public static IState? nextState;
+		public static RenderManager RenderManager;
+		private static IState? _currentState;
+		private static IState? _nextState;
+
+		public static bool _paused = false;
 
 		public static void OpenScene(IState s)
 		{
-			nextState = s;
+			_nextState = s;
 		}
 
 		static void Main(string[] args)
 		{
 			RenderManager = new RenderManager(Console.WindowWidth, Console.WindowHeight);
 
-			currentState = new StateMainMenu();
-			nextState = null;
+			_currentState = new StateMainMenu();
+			_nextState = null;
 
 			Sprite.LoadSprites();
 
@@ -32,22 +34,35 @@ namespace ConsoleGame
 				// Key input.
 				while (Console.KeyAvailable)
 				{
-					currentState.KeyPress(Console.ReadKey().Key);
+					ConsoleKey key = Console.ReadKey().Key;
+					switch (key)
+					{
+						case ConsoleKey.Escape:
+							_paused = !_paused;
+							break;
+
+						default:
+							if (!_paused)
+							{
+								_currentState.KeyPress(key);
+							}
+							break;
+					}
 				}
 
 				// Render.
 				RenderManager.Clear();
-				currentState.Render();
+				_currentState.Render();
 				RenderManager.SwapBuffers();
 
-				Thread.Sleep(20);
+				Thread.Sleep(1);
 
-				if (nextState != null)
+				if (_nextState != null)
 				{
-					currentState.Leave();
-					currentState = nextState;
-					nextState = null;
-					currentState.Enter();
+					_currentState.Leave();
+					_currentState = _nextState;
+					_nextState = null;
+					_currentState.Enter();
 				}
 			}
 		}

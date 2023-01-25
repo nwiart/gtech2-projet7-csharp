@@ -18,6 +18,8 @@ namespace ConsoleGame
 		public int CameraPosX { get; set; }
 		public int CameraPosY { get; set; }
 
+		public bool Transform { get; set; }
+
 
 
 		public RenderManager(int backBufferWidth, int backBufferHeight)
@@ -29,6 +31,8 @@ namespace ConsoleGame
 
 			CameraPosX = 0;
 			CameraPosY = 0;
+
+			Transform = true;
 		}
 
 		private void handleResize(int newWidth, int newHeight)
@@ -56,24 +60,24 @@ namespace ConsoleGame
 
 		public void SwapBuffers()
 		{
-			// Write back buffer to console.
-			Console.SetCursorPosition(0, 0);
-			Console.Write(_backBuffer);
-
-			// Submit colors.
-			IntPtr stdHandle = Win32.GetStdHandle(Win32.STD_OUTPUT_HANDLE);
 			int num = 0;
+			IntPtr stdHandle = Win32.GetStdHandle(Win32.STD_OUTPUT_HANDLE);
+
+			// Write back buffer to console.
+			Win32.WriteConsoleOutputCharacter(stdHandle, Console.OutputEncoding.GetBytes(_backBuffer), _bufferWidth * _bufferHeight, new Win32.COORD(0, 0), ref num);
+
+			// Submit colors.			
 			Win32.WriteConsoleOutputAttribute(stdHandle, _backColors, _bufferWidth * _bufferHeight, new Win32.COORD(0, 0), ref num);
 		}
 
-		public void SetForegroundColor(ConsoleColor c)
+		public void RenderChar(int posX, int posY, char c)
 		{
+			// Transform point.
+			WorldToConsole(ref posX, ref posY);
+			if (IsOutOfBoundsX(posX) || IsOutOfBoundsY(posY)) return;
 
-		}
-
-		public void SetBackgroundColor(ConsoleColor c)
-		{
-
+			_backBuffer[_bufferWidth * posY + posX] = c;
+			_backColors[_bufferWidth * posY + posX] = CurrentColor;
 		}
 
 		public void RenderHLine(int posX, int posY, int length, char c)
@@ -89,6 +93,24 @@ namespace ConsoleGame
 				if (IsOutOfBoundsX(x)) continue;
 
 				_backBuffer[_bufferWidth * posY + x] = c;
+				_backColors[_bufferWidth * posY + x] = CurrentColor;
+			}
+		}
+
+		public void RenderVLine(int posX, int posY, int length, char c)
+		{
+			// Transform point.
+			WorldToConsole(ref posX, ref posY);
+
+			if (IsOutOfBoundsX(posX)) return;
+
+			for (int i = 0; i < length; ++i)
+			{
+				int y = i + posY;
+				if (IsOutOfBoundsY(y)) continue;
+
+				_backBuffer[_bufferWidth * y + posX] = c;
+				_backColors[_bufferWidth * y + posX] = CurrentColor;
 			}
 		}
 
@@ -164,9 +186,12 @@ namespace ConsoleGame
 
 		public void WorldToConsole(ref int posX, ref int posY)
 		{
-			// Move two characters along X to make square movements.
-			posX = posX * 2 - CameraPosX * 2 + _bufferWidth / 2;
-			posY = posY - CameraPosY + _bufferHeight / 2;
+			if (Transform)
+			{
+				// Move two characters along X to make square movements.
+				posX = posX * 2 - CameraPosX * 2 + _bufferWidth / 2;
+				posY = posY - CameraPosY + _bufferHeight / 2;
+			}
 		}
 	}
 }

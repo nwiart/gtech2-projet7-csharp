@@ -27,6 +27,9 @@ namespace ConsoleGame
 		public static extern IntPtr GetStdHandle(int nStdHandle);
 
 		[DllImport("kernel32.dll")]
+		public static extern bool WriteConsoleOutputCharacter(IntPtr hConsoleOutput, byte[] lpCharacter, int nLength, COORD dwWriteCoord, ref int lpNumberOfCharsWritten);
+
+		[DllImport("kernel32.dll")]
 		public static extern bool WriteConsoleOutputAttribute(IntPtr hConsoleOutput, short[] lpAttribute, int nLength, COORD dwWriteCoord, ref int lpNumberOfAttrsWritten);
 
 		[DllImport("kernel32.dll")]
