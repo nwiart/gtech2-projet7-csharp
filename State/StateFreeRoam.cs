@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ConsoleGame.State
 {
+using SpriteList = List<Tuple<Sprite, int, int>>;
 	internal class StateFreeRoam : IState
 	{
 		public void Enter()
@@ -25,52 +27,25 @@ namespace ConsoleGame.State
 
 		public void Render()
 		{
-			string CreateMap()
-			{
-				string map = "";
-				for (int i = 0; i < 100; i++)
-				{
-					for (int j = 0; j < 100; j++)
-					{
-						if (i == 5 && j == 5)
-						{
-							map += "@";
-						}
-						else if (i == 10 && j == 10)
-						{
-							map += "!";
-						}
-						else if (i > 20 && i < 30 && j > 20 && j < 30)
-						{
-							map += "+";
-						}
-						else if (i > 30 && i < 40 && j > 30 && j < 40)
-						{
-							map += "?";
-						}
-						else if (i > 40 && i < 50 && j > 40 && j < 50)
-						{
-							map += "~";
-						}
-						else if (i > 50 && i < 60 && j > 50 && j < 60)
-						{
-							map += "X";
-						}
-						else
-						{
-							map += "*";
-						}
-					}
-				}
-				return map;
-			}
-			Program.RenderManager.RenderImage(0, 0, 100, 100, CreateMap());
+			SpriteList _list;
+			string[] _stringArray;
+			Map.LoadMap(out _list, out _stringArray);
 
-			Sprite player = Sprite.GetSprite("WARRIOR");
+            foreach (var item in _list)
+			{
+				Program.RenderManager.RenderSprite(item.Item2, item.Item3, item.Item1);
+			}
+            // foreach (var item in _stringArray)
+            // {
+            //     string s = "";
+            //     foreach (string s0 in _stringArray) s += s0;
+            //     Program.RenderManager.RenderImage(0, 0, _stringArray[0].Length, _stringArray.Length, s);
+            // }
+
+                //Program.RenderManager.RenderImage(0, 0, 100, 100);
+
+            Sprite player = Sprite.GetSprite("WARRIOR");
 			Sprite tree = Sprite.GetSprite("Tree");
-			Program.RenderManager.RenderSprite(0, -8, tree);
-			Program.RenderManager.RenderSprite(4, -8, tree);
-			Program.RenderManager.RenderSprite(8, -8, tree);
 			Program.RenderManager.RenderSprite(Program.RenderManager.CameraPosX, Program.RenderManager.CameraPosY, player);
 		}
 
