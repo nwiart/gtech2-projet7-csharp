@@ -60,13 +60,13 @@ namespace ConsoleGame
 
 		public void SwapBuffers()
 		{
-			// Write back buffer to console.
-			Console.SetCursorPosition(0, 0);
-			Console.Write(_backBuffer);
-
-			// Submit colors.
-			IntPtr stdHandle = Win32.GetStdHandle(Win32.STD_OUTPUT_HANDLE);
 			int num = 0;
+			IntPtr stdHandle = Win32.GetStdHandle(Win32.STD_OUTPUT_HANDLE);
+
+			// Write back buffer to console.
+			Win32.WriteConsoleOutputCharacter(stdHandle, Console.OutputEncoding.GetBytes(_backBuffer), _bufferWidth * _bufferHeight, new Win32.COORD(0, 0), ref num);
+
+			// Submit colors.			
 			Win32.WriteConsoleOutputAttribute(stdHandle, _backColors, _bufferWidth * _bufferHeight, new Win32.COORD(0, 0), ref num);
 		}
 

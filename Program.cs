@@ -55,7 +55,7 @@ namespace ConsoleGame
 				_currentState.Render();
 				RenderManager.SwapBuffers();
 
-				Thread.Sleep(20);
+				Thread.Sleep(1);
 
 				if (_nextState != null)
 				{
