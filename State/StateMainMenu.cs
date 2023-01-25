@@ -12,13 +12,13 @@ namespace ConsoleGame.State
 
 		private (string, int, int, Func<bool>)[] _options =
 		{
-			("Play", 6, 1, () =>
+			("Play", 10, 4, () =>
 				{
 					Program.OpenScene(new StateFreeRoam());
 					return true;
 				}
 			),
-			("Quit", 6, 3, () =>
+			("Quit", 10, 7, () =>
 				{
 					return true;
 				}
@@ -42,8 +42,10 @@ namespace ConsoleGame.State
 
 		public void Render()
 		{
-			Program.RenderManager.RenderString(6, 1, "Play");
-			Program.RenderManager.RenderString(6, 3, "Quit");
+			foreach (var opt in _options)
+			{
+				Program.RenderManager.RenderString(opt.Item2, opt.Item3, opt.Item1);
+			}
 
 			Program.RenderManager.RenderString(2, _options[_option].Item3, ">>>");
 
