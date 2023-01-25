@@ -14,7 +14,7 @@ namespace ConsoleGame.State
 		{
 			("Play", 10, 4, () =>
 				{
-					Program.OpenScene(new StateFreeRoam());
+					Program.OpenScene(StateFreeRoam.Instance);
 					return true;
 				}
 			),

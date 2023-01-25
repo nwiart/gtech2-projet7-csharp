@@ -8,6 +8,15 @@ namespace ConsoleGame.State
 {
 	internal class StateFreeRoam : IState
 	{
+		public static StateFreeRoam Instance { get; }
+
+		static StateFreeRoam()
+		{
+			Instance = new StateFreeRoam();
+		}
+
+
+
 		public void Enter()
 		{
 			
@@ -89,6 +98,10 @@ namespace ConsoleGame.State
 					break;
 				case ConsoleKey.RightArrow:
 					Program.RenderManager.CameraPosX++;
+					break;
+
+				case ConsoleKey.E:
+					Program.OpenScene(StateInventory.Instance);
 					break;
 			}
 		}

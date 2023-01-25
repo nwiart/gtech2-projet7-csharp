@@ -3,14 +3,14 @@
   <Class Name="ConsoleGame.Program">
     <Position X="5" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAAAAAABBACABA=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ConsoleGame.RenderManager">
     <Position X="6.75" Y="2" Width="3.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAICAAAIAAABAACAQAAAAAIQAAAAIgAAQAIBBIBA=</HashCode>
+      <HashCode>AAAAAICAAAIAAABAACAQAAAAAKQAQIAIgAAQAIBBIBA=</HashCode>
       <FileName>RenderManager.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -21,5 +21,28 @@
       <FileName>Sprite.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="ConsoleGame.State.StateFreeRoam" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="1.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAEEAAQAABAAAAAAAAA=</HashCode>
+      <FileName>State\StateFreeRoam.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.458" />
+  </Class>
+  <Class Name="ConsoleGame.State.StateMainMenu" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAQAAAAAAAAAAAAAAAgEEAAQAABAAAAAAAAA=</HashCode>
+      <FileName>State\StateMainMenu.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="ConsoleGame.State.IState" Collapsed="true">
+    <Position X="1.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAEEAAQAABAAAAAAAAA=</HashCode>
+      <FileName>State\IState.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="12" />
 </ClassDiagram>
