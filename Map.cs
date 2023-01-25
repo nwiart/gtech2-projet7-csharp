@@ -137,7 +137,7 @@ namespace ConsoleGame
                     }
                     else if (_mapLoaded[row][column] == '~') // if index is water
                     {
-                        _temp[row, column] = '~';
+                        _temp[row, column] = '░';
                     }
                     else if (_mapLoaded[row][column] == '#') // if index is a wall
                     {
@@ -166,7 +166,8 @@ namespace ConsoleGame
             {
                 for (int j = 0; j < _temp.GetLength(0); j++)
                 {
-                    _imageMap[i] = _temp[i, j].ToString();
+                    _imageMap[i] += _temp[i, j].ToString();
+                    _imageMap[i] += _temp[i, j].ToString();
                 }
             }
         }
