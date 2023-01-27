@@ -12,7 +12,14 @@ sprite BlueTree
 03/    \
 0d  ▓▒  
 
-sprite WARRIOR
+sprite WARRIO
 0f Ö_
 0c/| 
 0b/ \
+
+sprite WARRIOR
+0f
+0f
+0f    ███
+0f    ██Ì
+0f    ███

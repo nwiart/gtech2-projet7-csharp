@@ -28,11 +28,13 @@ namespace ConsoleGame.State
 			"Specials"
 		};
 
+
+
 		public void Enter()
 		{
 			// Default UI values.
 			_selectedCategory = 0;
-			_selectingCategory = false;
+			_selectingCategory = true;
 		}
 
 		public void Leave()
@@ -51,18 +53,10 @@ namespace ConsoleGame.State
 
 			rm.Transform = false;
 
-			// Category & items view panel.
-			rm.CurrentColor = (short) (_selectingCategory ? 0x06 : 0x0F);
-			rm.RenderBox(4, 2, 24, 26);
-			rm.CurrentColor = (short) (_selectingCategory ? 0x0F : 0x06);
-			rm.RenderBox(28, 2, 60, 26);
-			rm.CurrentColor = 0x0F;
-
-			// Item boxes test.
-			rm.RenderBox(29, 3, 12, 6);
-			rm.RenderBox(41, 3, 12, 6);
-
 			// Item categories.
+			rm.CurrentColor = (short) (_selectingCategory ? 0x06 : 0x0F);
+			rm.RenderBox(4, 2, 28, 26);
+
 			int itemCategoriesX = 6, itemCategoriesY = 3;
 			rm.RenderString(itemCategoriesX, itemCategoriesY + _selectedCategory * 2, ">");
 			for (int i = 0; i < _categories.Length; ++i)
@@ -71,6 +65,23 @@ namespace ConsoleGame.State
 					itemCategoriesX + 2,
 					itemCategoriesY + i * 2,
 					_categories[i]);
+			}
+
+			// Items view panel.
+			if (!_selectingCategory)
+			{
+				rm.CurrentColor = (short)(0x06);
+				rm.RenderBox(32, 2, 52, 26);
+				rm.CurrentColor = 0x0F;
+
+				rm.RenderBox(29, 14, 6, 3);
+				rm.RenderString(31, 15, "->");
+
+				// Item boxes test.
+				rm.RenderBox(34, 3, 12, 6);
+				rm.RenderBox(46, 3, 12, 6);
+				rm.RenderBox(58, 3, 12, 6);
+				rm.RenderBox(70, 3, 12, 6);
 			}
 
 			rm.Transform = true;
@@ -93,11 +104,18 @@ namespace ConsoleGame.State
 					_selectingCategory = true;
 					break;
 
+				// Navigation.
 				case ConsoleKey.UpArrow:
-					if (_selectedCategory > 0) _selectedCategory--;
+					if (_selectingCategory)
+					{
+						if (_selectedCategory > 0) _selectedCategory--;
+					}
 					break;
 				case ConsoleKey.DownArrow:
-					if (_selectedCategory < _categories.Length - 1) _selectedCategory++;
+					if (_selectingCategory)
+					{
+						if (_selectedCategory < _categories.Length - 1) _selectedCategory++;
+					}
 					break;
 			}
 		}
