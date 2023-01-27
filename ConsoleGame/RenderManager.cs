@@ -114,6 +114,21 @@ namespace ConsoleGame
 			}
 		}
 
+		public void RenderBox(int posX, int posY, int sizeX, int sizeY)
+		{
+			// Render borders.
+			RenderHLine(posX, posY, sizeX, '─');
+			RenderHLine(posX, posY + sizeY - 1, sizeX, '─');
+			RenderVLine(posX, posY + 1, sizeY - 2, '│');
+			RenderVLine(posX + sizeX - 1, posY + 1, sizeY - 2, '│');
+
+			// Render corners.
+			RenderChar(posX, posY, '┌');
+			RenderChar(posX + sizeX - 1, posY, '┐');
+			RenderChar(posX, posY + sizeY - 1, '└');
+			RenderChar(posX + sizeX - 1, posY + sizeY - 1, '┘');
+		}
+
 		public void RenderImage(int posX, int posY, int sizeX, int sizeY, string data)
 		{
 			// Transform point.
