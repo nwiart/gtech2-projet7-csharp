@@ -18,10 +18,21 @@ namespace ConsoleGame.State
 
 
 		private bool _selectingCategory = true;
+		private int _selectedCategory = 0;
+
+		private static string[] _categories =
+		{
+			"Items",
+			"Potions",
+			"Party",
+			"Specials"
+		};
 
 		public void Enter()
 		{
-			
+			// Default UI values.
+			_selectedCategory = 0;
+			_selectingCategory = false;
 		}
 
 		public void Leave()
@@ -52,20 +63,27 @@ namespace ConsoleGame.State
 		{
 			Program.RenderManager.Transform = false;
 
+			// Category & items view panel.
 			Program.RenderManager.CurrentColor = (short) (_selectingCategory ? 0x06 : 0x0F);
 			RenderBox(4, 2, 24, 26);
 			Program.RenderManager.CurrentColor = (short) (_selectingCategory ? 0x0F : 0x06);
 			RenderBox(28, 2, 60, 26);
 			Program.RenderManager.CurrentColor = 0x0F;
 
+			// Item boxes test.
 			RenderBox(29, 3, 12, 6);
 			RenderBox(41, 3, 12, 6);
 
-			Program.RenderManager.RenderString(6, 3, ">");
-			Program.RenderManager.RenderString(8, 3, "Items");
-			Program.RenderManager.RenderString(8, 5, "Potions");
-			Program.RenderManager.RenderString(8, 7, "Party");
-			Program.RenderManager.RenderString(8, 9, "Specials");
+			// Item categories.
+			int itemCategoriesX = 6, itemCategoriesY = 3;
+			Program.RenderManager.RenderString(itemCategoriesX, itemCategoriesY + _selectedCategory * 2, ">");
+			for (int i = 0; i < _categories.Length; ++i)
+			{
+				Program.RenderManager.RenderString(
+					itemCategoriesX + 2,
+					itemCategoriesY + i * 2,
+					_categories[i]);
+			}
 
 			Program.RenderManager.Transform = true;
 		}
@@ -74,12 +92,24 @@ namespace ConsoleGame.State
 		{
 			switch (key)
 			{
+				// E to exit inventory.
+				case ConsoleKey.E:
+					Program.OpenScene(StateFreeRoam.Instance);
+					break;
+
 				case ConsoleKey.Enter:
 					_selectingCategory = false;
 					break;
 
 				case ConsoleKey.Backspace:
 					_selectingCategory = true;
+					break;
+
+				case ConsoleKey.UpArrow:
+					if (_selectedCategory > 0) _selectedCategory--;
+					break;
+				case ConsoleKey.DownArrow:
+					if (_selectedCategory < _categories.Length - 1) _selectedCategory++;
 					break;
 			}
 		}
