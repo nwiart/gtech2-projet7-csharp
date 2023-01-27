@@ -16,10 +16,13 @@ namespace ConsoleGame.State
         {
             Instance = new StateFreeRoam();
         }
+        private SpriteList? _list;
+        private string[]? _stringArray;
 
         public void Enter()
         {
 
+            Map.LoadMap(out _list, out _stringArray);
         }
 
         public void Leave()
@@ -34,10 +37,6 @@ namespace ConsoleGame.State
 
         public void Render()
         {
-            SpriteList _list;
-            string[] _stringArray;
-            Map.LoadMap(out _list, out _stringArray);
-
             foreach (var item in _stringArray)
             {
                 string s = "";
@@ -58,15 +57,31 @@ namespace ConsoleGame.State
             switch (key)
             {
                 case ConsoleKey.UpArrow:
-                    Program.RenderManager.CameraPosY--;
+                    // collision detection
+
+                    
+                        Program.RenderManager.CameraPosY--;
+                    
                     break;
                 case ConsoleKey.DownArrow:
+                    // if (!)
+                    // {
+
+                    // }
                     Program.RenderManager.CameraPosY++;
                     break;
                 case ConsoleKey.LeftArrow:
+                    // if (!)
+                    // {
+
+                    // }
                     Program.RenderManager.CameraPosX--;
                     break;
                 case ConsoleKey.RightArrow:
+                    // if (true)
+                    // {
+
+                    // }
                     Program.RenderManager.CameraPosX++;
                     break;
 

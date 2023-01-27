@@ -170,6 +170,19 @@ namespace ConsoleGame
 				}
 			}
 		}
+
+        // public static bool isCollidable(string character)
+        // {
+        //     if (character.Equals(""))
+        //     {
+                
+        //     }
+        // }
+
+        // public static isCollidable(string[] coord)
+        // {
+
+        // }
 	}
 }
 
