@@ -10,19 +10,19 @@ namespace ConsoleGame.State
     using SpriteList = List<Tuple<Sprite, int, int>>;
     internal class StateFreeRoam : IState
     {
+        // Create the map
+        Map _map = new Map();
+
         public static StateFreeRoam Instance { get; }
 
         static StateFreeRoam()
         {
             Instance = new StateFreeRoam();
         }
-        private SpriteList? _list;
-        private string[]? _stringArray;
 
         public void Enter()
         {
-
-            Map.LoadMap(out _list, out _stringArray);
+            _map.Load();
         }
 
         public void Leave()
@@ -37,19 +37,18 @@ namespace ConsoleGame.State
 
         public void Render()
         {
-            foreach (var item in _stringArray)
+            for (int y = 0; y < _map.GetImageMap().Count(); y++)
             {
-                string s = "";
-                foreach (string s0 in _stringArray) s += s0;
-                Program.RenderManager.RenderImage(0, 0, _stringArray[0].Length, _stringArray.Length, s);
+                string row = _map.GetImageMap()[y];
+                Program.RenderManager.RenderImage(0, y, row.Length, 1, row);
             }
-            foreach (var item in _list)
+            foreach (var item in _map.GetSprites())
             {
                 Program.RenderManager.RenderSprite(item.Item2, item.Item3, item.Item1);
             }
             Sprite player = Sprite.GetSprite("WARRIOR");
             Sprite tree = Sprite.GetSprite("Tree");
-            Program.RenderManager.RenderSprite(Program.RenderManager.CameraPosX, Program.RenderManager.CameraPosY, player);
+            Program.RenderManager.RenderSprite(Program.RenderManager.CameraPosX, Program.RenderManager.CameraPosY-2, player);
         }
 
         public void KeyPress(ConsoleKey key)
@@ -57,32 +56,29 @@ namespace ConsoleGame.State
             switch (key)
             {
                 case ConsoleKey.UpArrow:
-                    // collision detection
-
-                    
+                    if (!_map.IsCollidable(Program.RenderManager.CameraPosX, Program.RenderManager.CameraPosY-1))
+                    {
                         Program.RenderManager.CameraPosY--;
-                    
+                    }
                     break;
-                case ConsoleKey.DownArrow:
-                    // if (!)
-                    // {
 
-                    // }
-                    Program.RenderManager.CameraPosY++;
+                case ConsoleKey.DownArrow:
+                    if (!_map.IsCollidable(Program.RenderManager.CameraPosX, Program.RenderManager.CameraPosY+1))
+                    {
+                        Program.RenderManager.CameraPosY++;
+                    }
                     break;
                 case ConsoleKey.LeftArrow:
-                    // if (!)
-                    // {
-
-                    // }
-                    Program.RenderManager.CameraPosX--;
+                    if (!_map.IsCollidable(Program.RenderManager.CameraPosX-1, Program.RenderManager.CameraPosY))
+                    {
+                        Program.RenderManager.CameraPosX--;
+                    }
                     break;
                 case ConsoleKey.RightArrow:
-                    // if (true)
-                    // {
-
-                    // }
-                    Program.RenderManager.CameraPosX++;
+                    if (!_map.IsCollidable(Program.RenderManager.CameraPosX+1, Program.RenderManager.CameraPosY))
+                    {
+                        Program.RenderManager.CameraPosX++;
+                    }
                     break;
 
                 case ConsoleKey.E:
