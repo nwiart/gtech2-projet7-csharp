@@ -1,25 +1,27 @@
 sprite Tree
 0a  /\  
-0a /  \ 
-0a /  \ 
-0a/    \
+0a /ii\ 
+0a /ii\ 
+0a/iiii\
 06  ▓▒  
 
 sprite BlueTree
 03  /\  
-03 /  \ 
-03 /  \ 
-03/    \
+03 /ii\ 
+03 /ii\ 
+03/iiii\
 0d  ▓▒  
 
-sprite WARRIO
+sprite WARRIOR
 0f Ö_
 0c/| 
 0b/ \
 
-sprite WARRIOR
-0f
-0f
-0f    ███
-0f    ██Ì
-0f    ███
+sprite House
+c0  ┴┬┴┬┴┬┴┬┴┬┴┬
+c0 ┴┬┴┬┴┬┴┬┴┬┴┬┴┬ 
+c0┴┬┴┬┴┬┴┬┴┬┴┬┴┬┴┬
+06 ▓████████████▓
+06 ▓███iii██─┼─█▓
+06 ▓███iio██████▓
+06 ▓▓▓▓iii▓▓▓▓▓▓▓

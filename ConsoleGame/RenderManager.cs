@@ -151,10 +151,16 @@ namespace ConsoleGame
 					if (indexX >= _bufferWidth) break;
 
 					char ch = data[r * sizeX + c];
-					if (ch != ' ')
+					switch (ch)
 					{
-						_backBuffer[baseIndexY + indexX] = ch;
-						_backColors[baseIndexY + indexX] = CurrentColor;
+						case ' ': break; // Transparent.
+						case 'i':        // Opaque empty tile.
+							_backBuffer[baseIndexY + indexX] = ' ';
+							break;
+						default:
+							_backBuffer[baseIndexY + indexX] = ch;
+							_backColors[baseIndexY + indexX] = CurrentColor;
+							break;
 					}
 				}
 			}
