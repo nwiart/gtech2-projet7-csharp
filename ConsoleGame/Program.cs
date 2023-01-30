@@ -49,7 +49,7 @@ namespace ConsoleGame
 							break;
 					}
 				}
-
+                _currentState.Update();
 				// Render.
 				RenderManager.Clear();
 				_currentState.Render();

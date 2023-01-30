@@ -1,4 +1,4 @@
-/*  ---- _map INDEXS ---- */
+/*  ---- MAP INDEXS ---- */
 /*
 |        |*| = Grass
 |        |@| = Player Spawn
@@ -17,10 +17,9 @@ namespace ConsoleGame
     using System.Text;
     using SpriteList = List<Tuple<Sprite, int, int>>;
 
-    // _map class made of indexes 
+    // Map class made of indexes 
     public class Map
     {
-
         private string[] _mapLoaded =
             {
                 "?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ?  ",
@@ -91,10 +90,11 @@ namespace ConsoleGame
         private string[]? _imageMap;  // create a new string array for letters map
         private SpriteList _spriteList = new SpriteList(); // list of sprites
 
-        public SpriteList GetSprites() { return _spriteList; }
-
-        public string[] GetImageMap() { return _imageMap; }
         
+        public SpriteList GetSprites() { return _spriteList; } // Get the Sprites of the map
+       
+        public string[] GetImageMap() { return _imageMap; }  // Get the chars of the map
+
 
 
         public void Load()
@@ -191,7 +191,7 @@ namespace ConsoleGame
 
         public bool IsCollidable(int x, int y)
         {
-            return IsCollidable(_imageMap[y][x*2]);
+            return IsCollidable(_imageMap[y][x * 2]);
         }
     }
 }
