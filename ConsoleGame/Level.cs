@@ -4,21 +4,29 @@ using System.Runtime.InteropServices;
 
 namespace ConsoleGame
 {
-    class Level
+    public class Level
     {
         Map _mapLevel = new Map();
+        Player _player = new Player();
+
         public Level()
         {
+            _player.SetLevel(this);
         }
 
         public void Update()
         {
-
+            
         }
 
         public Map GetMap()
         {
             return _mapLevel;
+        }
+
+        public Player GetPlayer()
+        {
+            return _player;
         }
 
         public static bool IsSpawnable(char tileType)

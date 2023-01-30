@@ -10,7 +10,7 @@ namespace ConsoleGame.State
     using SpriteList = List<Tuple<Sprite, int, int>>;
     internal class StateFreeRoam : IState
     {
-        
+
         Level _level = new Level();
         public static StateFreeRoam Instance { get; }
 
@@ -31,12 +31,14 @@ namespace ConsoleGame.State
 
         public IState? Update()
         {
-            _level.SpawnEnemy();
+            _level.GetPlayer().Update();
             return null;
         }
 
         public void Render()
         {
+
+
             for (int y = 0; y < _level.GetMap().GetImageMap().Count(); y++)
             {
                 string row = _level.GetMap().GetImageMap()[y];
@@ -48,39 +50,16 @@ namespace ConsoleGame.State
             }
             Sprite player = Sprite.GetSprite("WARRIOR");
             Sprite tree = Sprite.GetSprite("Tree");
-            Program.RenderManager.RenderSprite(Program.RenderManager.CameraPosX, Program.RenderManager.CameraPosY-2, player);
+            Program.RenderManager.RenderSprite(Program.RenderManager.CameraPosX, Program.RenderManager.CameraPosY - 2, player);
         }
 
         public void KeyPress(ConsoleKey key)
         {
+            _level.GetPlayer().KeyPress(key);
+            // Spawn Enemy when player moves
+            _level.SpawnEnemy();
             switch (key)
             {
-                case ConsoleKey.UpArrow:
-                    if (!_level.GetMap().IsCollidable(Program.RenderManager.CameraPosX, Program.RenderManager.CameraPosY-1))
-                    {
-                        Program.RenderManager.CameraPosY--;
-                    }
-                    break;
-
-                case ConsoleKey.DownArrow:
-                    if (!_level.GetMap().IsCollidable(Program.RenderManager.CameraPosX, Program.RenderManager.CameraPosY+1))
-                    {
-                        Program.RenderManager.CameraPosY++;
-                    }
-                    break;
-                case ConsoleKey.LeftArrow:
-                    if (!_level.GetMap().IsCollidable(Program.RenderManager.CameraPosX-1, Program.RenderManager.CameraPosY))
-                    {
-                        Program.RenderManager.CameraPosX--;
-                    }
-                    break;
-                case ConsoleKey.RightArrow:
-                    if (!_level.GetMap().IsCollidable(Program.RenderManager.CameraPosX+1, Program.RenderManager.CameraPosY))
-                    {
-                        Program.RenderManager.CameraPosX++;
-                    }
-                    break;
-
                 case ConsoleKey.E:
                     Program.OpenScene(StateInventory.Instance);
                     break;

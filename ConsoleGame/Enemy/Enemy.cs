@@ -9,6 +9,11 @@ namespace ConsoleGame
 
     public class Enemy
     {
+
+        struct EnemyTypes
+        {
+            
+        }
         public int X { get; set; }
         public int Y { get; set; }
         public int Health { get; set; }
