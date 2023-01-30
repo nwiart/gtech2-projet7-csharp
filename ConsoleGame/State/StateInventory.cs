@@ -52,10 +52,10 @@ namespace ConsoleGame.State
 			RenderManager rm = Program.RenderManager;
 
 			rm.Transform = false;
-
+			
 			// Item categories.
 			rm.CurrentColor = (short) (_selectingCategory ? 0x06 : 0x0F);
-			rm.RenderBox(4, 2, 28, 26);
+			rm.RenderBox(4, 2, 28, 9);
 
 			int itemCategoriesX = 6, itemCategoriesY = 3;
 			rm.RenderString(itemCategoriesX, itemCategoriesY + _selectedCategory * 2, ">");
@@ -71,17 +71,17 @@ namespace ConsoleGame.State
 			if (!_selectingCategory)
 			{
 				rm.CurrentColor = (short)(0x06);
-				rm.RenderBox(32, 2, 52, 26);
+				rm.RenderBox(32, 2, 54, 26);
 				rm.CurrentColor = 0x0F;
 
-				rm.RenderBox(29, 14, 6, 3);
-				rm.RenderString(31, 15, "->");
+				rm.RenderBox(29, 5, 6, 3);
+				rm.RenderString(31, 6, "->");
 
 				// Item boxes test.
-				rm.RenderBox(34, 3, 12, 6);
-				rm.RenderBox(46, 3, 12, 6);
-				rm.RenderBox(58, 3, 12, 6);
-				rm.RenderBox(70, 3, 12, 6);
+				rm.RenderBox(35, 3, 12, 6);
+				rm.RenderBox(47, 3, 12, 6);
+				rm.RenderBox(59, 3, 12, 6);
+				rm.RenderBox(71, 3, 12, 6);
 			}
 
 			rm.Transform = true;
@@ -96,14 +96,6 @@ namespace ConsoleGame.State
 					Program.OpenScene(StateFreeRoam.Instance);
 					break;
 
-				case ConsoleKey.Enter:
-					_selectingCategory = false;
-					break;
-
-				case ConsoleKey.Backspace:
-					_selectingCategory = true;
-					break;
-
 				// Navigation.
 				case ConsoleKey.UpArrow:
 					if (_selectingCategory)
@@ -116,6 +108,13 @@ namespace ConsoleGame.State
 					{
 						if (_selectedCategory < _categories.Length - 1) _selectedCategory++;
 					}
+					break;
+				case ConsoleKey.RightArrow:
+					_selectingCategory = false;
+					break;
+
+				case ConsoleKey.LeftArrow:
+					_selectingCategory = true;
 					break;
 			}
 		}
