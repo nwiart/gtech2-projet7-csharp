@@ -194,6 +194,9 @@ namespace ConsoleGame
 				case TextAlign.RIGHT:
 					posX -= text.Length;
 					break;
+				case TextAlign.CENTER:
+					posX -= text.Length / 2;
+					break;
 			}
 
 			for (int i = 0; i < text.Length; ++i)
@@ -203,6 +206,7 @@ namespace ConsoleGame
 				if (IsOutOfBoundsX(x)) continue;
 
 				_backBuffer[_bufferWidth * posY + x] = text[i];
+				_backColors[_bufferWidth * posY + x] = CurrentColor;
 			}
 		}
 
