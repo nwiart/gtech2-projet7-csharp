@@ -19,6 +19,9 @@ namespace ConsoleGame
 
 		static void Main(string[] args)
 		{
+			Console.WindowWidth = 160;
+			Console.WindowHeight = 42;
+
 			RenderManager = new RenderManager(Console.WindowWidth, Console.WindowHeight);
 
 			_currentState = new StateMainMenu();
@@ -26,7 +29,13 @@ namespace ConsoleGame
 
 			Sprite.LoadSprites();
 
+			// Set console title & make it unresizable.
 			Win32.SetConsoleTitle("ConsoleGame");
+
+			IntPtr consoleHwnd = Win32.GetConsoleWindow();
+			int style = Win32.GetWindowLongA(consoleHwnd, Win32.GWL_STYLE);
+			style = style & ~(Win32.WS_MAXIMIZEBOX | Win32.WS_THICKFRAME);
+			Win32.SetWindowLongA(consoleHwnd, Win32.GWL_STYLE, style);
 
 			// Game loop.
 			while (true)

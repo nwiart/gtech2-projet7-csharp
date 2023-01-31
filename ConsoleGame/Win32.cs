@@ -9,6 +9,11 @@ namespace ConsoleGame
 {
 	internal class Win32
 	{
+		public static readonly int GWL_STYLE = -16;
+
+		public static readonly int WS_MAXIMIZEBOX = 0x00010000;
+		public static readonly int WS_THICKFRAME = 0x00040000;
+
 		public struct COORD
 		{
 			short x;
@@ -34,5 +39,14 @@ namespace ConsoleGame
 
 		[DllImport("kernel32.dll")]
 		public static extern bool SetConsoleTitle(string lpConsoleTitle);
+
+		[DllImport("kernel32.dll")]
+		public static extern IntPtr GetConsoleWindow();
+
+		[DllImport("user32.dll")]
+		public static extern int GetWindowLongA(IntPtr hWnd, int nIndex);
+
+		[DllImport("user32.dll")]
+		public static extern int SetWindowLongA(IntPtr hWnd, int nIndex, int dwNewLong);
 	}
 }
