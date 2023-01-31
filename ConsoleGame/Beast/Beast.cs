@@ -24,11 +24,15 @@ namespace ConsoleGame.Beast
         public int ActualMana { get; private set; }
         public int ManaMax { get; private set; }
         public int MaxCapacity { get; private set; }
-
+        
+        // gettter for the entire Bestiary
+        
         // Beast registration.
+        public static Dictionary<string, Beast> Bestiary { get { return _beastsByRegistryID; } }
         static Beast()
         {
             _beastsByRegistryID = new Dictionary<string, Beast>();
+
 
             //  ---- Create Beasts ----
             //                            Name | Attack | Defense | ActualHealth | Maxhealth | Cooldown
@@ -82,7 +86,7 @@ namespace ConsoleGame.Beast
             ManaMax = manaMax;
             MaxCapacity = maxCapacity;
         }
-       
+
 
 
 
