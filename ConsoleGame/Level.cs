@@ -16,7 +16,7 @@ namespace ConsoleGame
 
         public void Update()
         {
-            
+
         }
 
         public Map GetMap()
@@ -51,8 +51,9 @@ namespace ConsoleGame
             if (IsSpawnable(Program.RenderManager.CameraPosX, Program.RenderManager.CameraPosY))
             {
                 Random randomNumber = new Random();
-                int x = randomNumber.Next(1, 10);
-                if (x < 5)
+                // 1% chance of spawning an enemy
+                int x = randomNumber.Next(1, 1000);
+                if (x < 10)
                 {
                     Program.OpenScene(StateCombat.Instance);
                 }

@@ -33,7 +33,7 @@ namespace ConsoleGame.State
 
 		public void Render()
 		{
-			RenderManager rm = Program.RenderManager;
+			RenderManager? rm = Program.RenderManager;
 			rm.Transform = false;
 
 			rm.RenderString(2, 1, "You have encountered a wild ------!");
