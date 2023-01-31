@@ -6,7 +6,7 @@ namespace ConsoleGame
 {
 	class Program
 	{
-		public static RenderManager RenderManager;
+		public static RenderManager? RenderManager;
 		private static IState? _currentState;
 		private static IState? _nextState;
 
