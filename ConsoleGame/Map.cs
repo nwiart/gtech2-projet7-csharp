@@ -191,14 +191,8 @@ namespace ConsoleGame
 
         public bool IsCollidable(int x, int y)
         {
+            if (x < 0 || x >= _imageMap[0].Length || y < 0 || y >= _imageMap.Length) return true;
             return IsCollidable(_imageMap[y][x * 2]);
         }
     }
 }
-
-
-
-
-
-
-// FileStream file = File.open("save.txt", FileMode.Open);
