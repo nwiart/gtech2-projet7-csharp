@@ -54,12 +54,9 @@ namespace ConsoleGame
                 int x = randomNumber.Next(1, 10);
                 if (x < 5)
                 {
-                    Console.WriteLine("Enemy spawned");
+                    Program.OpenScene(StateCombat.Instance);
                 }
             }
-
         }
-
-
     }
 }
