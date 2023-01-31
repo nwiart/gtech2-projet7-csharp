@@ -8,6 +8,13 @@ namespace ConsoleGame
 {
 	internal class RenderManager
 	{
+		public enum TextAlign
+		{
+			LEFT,
+			CENTER,
+			RIGHT
+		}
+
 		private char[] _backBuffer;
 		private short[] _backColors;
 		private int _bufferWidth;
@@ -177,10 +184,17 @@ namespace ConsoleGame
 			}
 		}
 
-		public void RenderString(int posX, int posY, string text)
+		public void RenderString(int posX, int posY, string text, TextAlign align = TextAlign.LEFT)
 		{
 			// Out of bounds check.
 			if (IsOutOfBoundsY(posY)) return;
+
+			switch (align)
+			{
+				case TextAlign.RIGHT:
+					posX -= text.Length;
+					break;
+			}
 
 			for (int i = 0; i < text.Length; ++i)
 			{
