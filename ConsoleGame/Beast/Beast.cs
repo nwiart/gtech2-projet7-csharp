@@ -24,7 +24,7 @@ namespace ConsoleGame.Beast
 		private static void registerBeast(string registryID, Beast beast)
 		{
 			_beastsByRegistryID.Add(registryID, beast);
-			beast._registryID = registryID;
+			beast.RegistryID = registryID;
 		}
 
 		public static Beast? GetBeastByID(string registryID)
@@ -34,17 +34,13 @@ namespace ConsoleGame.Beast
 
 
 
-		private string? _registryID;
-		public string? RegistryID
-		{
-			get { return _registryID; }
-		}
+		public string? RegistryID { get; private set; }
 
 		public string Name { get; }
 
 		Beast(string name)
 		{
-			_registryID = null;
+			RegistryID = null;
 			Name = name;
 		}
 	}
