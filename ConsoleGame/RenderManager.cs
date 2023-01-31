@@ -8,6 +8,13 @@ namespace ConsoleGame
 {
 	internal class RenderManager
 	{
+		public enum TextAlign
+		{
+			LEFT,
+			CENTER,
+			RIGHT
+		}
+
 		private char[] _backBuffer;
 		private short[] _backColors;
 		private int _bufferWidth;
@@ -53,7 +60,7 @@ namespace ConsoleGame
 
 			// Fill buffer with spaces.
 			Array.Fill(_backBuffer, ' ');
-			Array.Fill(_backColors, (short) 0x0f);
+			Array.Fill(_backColors, (short)0x0f);
 
 			Console.CursorVisible = false;
 		}
@@ -170,17 +177,24 @@ namespace ConsoleGame
 		{
 			for (int i = 0; i < sprite.Height; ++i)
 			{
-				CurrentColor = (short) sprite.GetRowColor(i);
+				CurrentColor = (short)sprite.GetRowColor(i);
 
 				string row = sprite.GetRow(i);
 				RenderImage(posX, posY + i, row.Length, 1, row);
 			}
 		}
 
-		public void RenderString(int posX, int posY, string text)
+		public void RenderString(int posX, int posY, string text, TextAlign align = TextAlign.LEFT)
 		{
 			// Out of bounds check.
 			if (IsOutOfBoundsY(posY)) return;
+
+			switch (align)
+			{
+				case TextAlign.RIGHT:
+					posX -= text.Length;
+					break;
+			}
 
 			for (int i = 0; i < text.Length; ++i)
 			{
@@ -189,6 +203,25 @@ namespace ConsoleGame
 				if (IsOutOfBoundsX(x)) continue;
 
 				_backBuffer[_bufferWidth * posY + x] = text[i];
+			}
+		}
+
+		public void FillColors(int posX, int posY, int length, short[] colorBuffer, int bufferStart)
+		{
+			// Transform point.
+			WorldToConsole(ref posX, ref posY);
+
+			// Clip testing Y.
+			if (IsOutOfBoundsY(posY)) return;
+
+			for (int c = 0; c < length; ++c)
+			{
+				int indexX = c + posX;
+				if (indexX < 0) continue;
+				if (indexX >= _bufferWidth) break;
+
+				short ch = colorBuffer[c + bufferStart];
+				_backColors[posY * _bufferWidth + indexX] = ch;
 			}
 		}
 

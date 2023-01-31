@@ -43,7 +43,7 @@ namespace ConsoleGame
 
         public bool IsSpawnable(int x, int y)
         {
-            return IsSpawnable(_mapLevel.GetImageMap()[y][x * 2]);
+            return IsSpawnable(_mapLevel.GetTileAt(x, y));
         }
 
         public void SpawnEnemy()
