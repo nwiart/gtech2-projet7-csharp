@@ -36,10 +36,11 @@ namespace ConsoleGame.State
 
 		public void Render()
 		{
-			for (int y = 0; y < _level.GetMap().GetImageMap().Count(); y++)
+			Program.RenderManager.RenderImage(0, 0, _level.GetMap().Width * 2, _level.GetMap().Height, _level.GetMap().GetImageMap());
+
+			for (int y = 0; y < _level.GetMap().Height; y++)
 			{
-				string row = _level.GetMap().GetImageMap()[y];
-				Program.RenderManager.RenderImage(0, y, row.Length, 1, row);
+				Program.RenderManager.FillColors(0, y, _level.GetMap().Width * 2, _level.GetMap().GetImageColors(), y * _level.GetMap().Width * 2);
 			}
 			foreach (var item in _level.GetMap().GetSprites())
 			{
