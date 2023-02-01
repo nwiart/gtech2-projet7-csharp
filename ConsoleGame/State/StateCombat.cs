@@ -39,8 +39,10 @@ namespace ConsoleGame.State
         public void Enter()
         {
             Random randomNumber = new Random();
+            Random randomLevel = new Random();
+            int y = randomLevel.Next(1, 6);
             int x = randomNumber.Next(1, Beast.Bestiary.Count);
-            _enemyBeast = new BeastItem(Beast.Bestiary.ElementAt(x).Value); /*?? throw new NullReferenceException(); */
+            _enemyBeast = new BeastItem(Beast.Bestiary.ElementAt(x).Value, y); /*?? throw new NullReferenceException(); */
             // Needs to be assigned to a varaiable to be used in the render method
         }
 
@@ -78,7 +80,7 @@ namespace ConsoleGame.State
             if (_playerBeast != null)
             {
                 rm.RenderString(MARGIN + 1, SPRITE_RECTY - 3, "Trucmuche");
-                rm.RenderString(MARGIN + 1, SPRITE_RECTY + SPRITE_RECTH + 1, "LVL 1");
+                rm.RenderString(MARGIN + 1, SPRITE_RECTY + SPRITE_RECTH + 1, $"LVL {_playerBeast.Level}");
             }
 
             // ----- Enemy Part -----
@@ -86,7 +88,7 @@ namespace ConsoleGame.State
             if (_enemyBeast != null)
             {
                 rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY - 3, _enemyBeast.Beast.Name, RenderManager.TextAlign.RIGHT);
-                rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY + SPRITE_RECTH + 1, "LVL 1", RenderManager.TextAlign.RIGHT);
+                rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY + SPRITE_RECTH + 1, $"LVL {_enemyBeast.Level}", RenderManager.TextAlign.RIGHT);
             }
 
             // ----- Health bars -----
@@ -94,7 +96,7 @@ namespace ConsoleGame.State
             rm.RenderHLine(MARGIN + 1, SPRITE_RECTY - 2, 26, '█');
             rm.RenderHLine(Console.WindowWidth - SPRITE_RECTW - MARGIN - 1, SPRITE_RECTY - 2, 26, '█');
             rm.CurrentColor = 0x0a;
-            rm.RenderString(Console.WindowWidth - 6, SPRITE_RECTY - 2, $"{_enemyBeast.Health.ToString()}/{_enemyBeast.Beast.MaxHealth.ToString()}");
+            rm.RenderString(Console.WindowWidth - 6, SPRITE_RECTY - 2, $"{_enemyBeast.Health.ToString()}/{_enemyBeast.GetMaxHealth().ToString()}");
 
             // ----- Player's choice box -----
             rm.CurrentColor = 0x0f;
@@ -120,6 +122,16 @@ namespace ConsoleGame.State
                 case ConsoleKey.E:
                     Program.RenderManager.RenderString(20, Console.WindowHeight - 5, $"The opponent {_enemyBeast.Beast.Name} used {_enemyBeast.Beast.Capacities[0].Name}!");
                     _enemyBeast.Beast.Capacities[0].UseCapacity(_enemyBeast, _enemyBeast);
+                    if (_enemyBeast.Health <= 0)
+                    {
+                        // Say You won
+                        // gain exp for all the team
+                        // Check Evolve for each beast
+                    }
+                    else
+                    {
+                        // Say WELCOME TO DARK SOULS
+                    }
                     break;
             }
         }

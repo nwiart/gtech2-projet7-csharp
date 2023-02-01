@@ -41,7 +41,6 @@ namespace ConsoleGame.Beast
 
         // Beast type stats.
         public string Name { get; private set; }
-        public int Level { get; private set; }
         public int Attack { get; private set; }
         public int Defense { get; private set; }
         public int MaxHealth { get; private set; }
@@ -82,9 +81,9 @@ namespace ConsoleGame.Beast
 
             Capacity[] papiermachetteCapacity = { BITE, SCRATCH };
 
-            registerBeast("leggedthing", new Beast("Truc à Pats", 1, 5, leggedCapacity));
-            registerBeast("ambush", new Beast("Embuisscade", 1, 10, ambushCapacity));
-            registerBeast("papiermachette", new Beast("Origamonstre", 1, 15, papiermachetteCapacity));
+            registerBeast("leggedthing", new Beast("Truc à Pats", 20, 10, 5 , 4, 20, leggedCapacity));
+            registerBeast("ambush", new Beast("Embuisscade", 15, 10, 0, 6, 20, ambushCapacity));
+            registerBeast("papiermachette", new Beast("Origamonstre", 10, 10, 0, 6, 20, papiermachetteCapacity));
 
 
             //  ---- Add Capacities to Capacity Lists ----
@@ -117,14 +116,16 @@ namespace ConsoleGame.Beast
         }
         public string? RegistryID { get; private set; }
 
-        Beast(string name, int level, int attack, Capacity[] capacities)
+        Beast(string name, int attack, int maxHealth, int defense, int maxMana, int exp, Capacity[] capacities)
         {
             RegistryID = null;
             Name = name;
-            Level = level;
             Attack = attack;
+            MaxHealth = maxHealth;
+            Defense = defense;
+            MaxMana = maxMana;
+            ExperienceToEvolve = exp;
             this.Capacities = capacities;
-                      
         }
 
         public class Capacity

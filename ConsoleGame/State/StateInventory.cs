@@ -51,7 +51,7 @@ namespace ConsoleGame.State
 			_beastsList.Clear();
 			foreach (Inventory.BeastItem bi in Player.Instance.Inventory.Beasts)
 			{
-				_beastsList.AddItem($"{bi.Beast.Name} - LVL 1", bi);
+				_beastsList.AddItem($"{bi.Beast.Name} - LVL {bi.Level}", bi);
 			}
 
 			_partyList.Clear();
