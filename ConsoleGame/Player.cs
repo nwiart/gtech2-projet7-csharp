@@ -2,9 +2,18 @@ namespace ConsoleGame
 {
     public class Player
     {
+        public static Player Instance { get; private set; }
+
         private Level? _level;
+        public Inventory.Inventory Inventory { get; private set; }
         public int PosX { get; set; }
         public int PosY { get; set; }
+
+        public Player()
+        {
+            Instance = this;
+            Inventory = new Inventory.Inventory();
+        }
 
         public void SetLevel(Level level)
         {

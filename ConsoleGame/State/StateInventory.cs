@@ -17,24 +17,48 @@ namespace ConsoleGame.State
 
 
 
-		private bool _selectingCategory = true;
-		private int _selectedCategory = 0;
+		private UIList _categoriesList = new UIList();
+		private UIList _itemsList  = new UIList();
+		private UIList _beastsList = new UIList();
+		private UIList _partyList  = new UIList();
 
-		private static string[] _categories =
+		private UIList _focusedList;
+
+
+
+		private StateInventory()
 		{
-			"Items",
-			"Potions",
-			"Party",
-			"Specials"
-		};
+			_focusedList = _categoriesList;
 
-
+			_categoriesList.AddItem("Items",  _itemsList);
+			_categoriesList.AddItem("Beasts", _beastsList);
+			_categoriesList.AddItem("Party",  _partyList);
+		}
 
 		public void Enter()
 		{
 			// Default UI values.
-			_selectedCategory = 0;
-			_selectingCategory = true;
+			_focusedList = _categoriesList;
+
+			_categoriesList.SelectedItemIndex = 0;
+
+			_itemsList.Clear();
+			/*foreach (Inventory.BeastItem bi in Player.Instance.Inventory.Beasts)
+			{
+				_itemsList.AddItem($"{bi.Beast.Name} - LVL 1", bi);
+			}*/
+
+			_beastsList.Clear();
+			foreach (Inventory.BeastItem bi in Player.Instance.Inventory.Beasts)
+			{
+				_beastsList.AddItem($"{bi.Beast.Name} - LVL 1", bi);
+			}
+
+			_partyList.Clear();
+			/*foreach (Inventory.BeastItem bi in Player.Instance.Inventory.Beasts)
+			{
+				_partyList.AddItem($"{bi.Beast.Name} - LVL 1", bi);
+			}*/
 		}
 
 		public void Leave()
@@ -52,11 +76,15 @@ namespace ConsoleGame.State
 			RenderManager rm = Program.RenderManager;
 
 			rm.Transform = false;
-			
-			// Item categories.
-			rm.CurrentColor = (short) (_selectingCategory ? 0x06 : 0x0F);
-			rm.RenderBox(4, 2, 28, 9);
 
+			// Item categories.
+			_categoriesList.PosX = 5;
+			_categoriesList.PosY = 3;
+			rm.CurrentColor = (short) (_focusedList == _categoriesList ? 0x06 : 0x0F);
+			rm.RenderBox(4, 2, 28, 9);
+			_categoriesList.Render(rm);
+
+			/*rm.CurrentColor = 0x0f;
 			int itemCategoriesX = 6, itemCategoriesY = 3;
 			rm.RenderString(itemCategoriesX, itemCategoriesY + _selectedCategory * 2, ">");
 			for (int i = 0; i < _categories.Length; ++i)
@@ -65,10 +93,10 @@ namespace ConsoleGame.State
 					itemCategoriesX + 2,
 					itemCategoriesY + i * 2,
 					_categories[i]);
-			}
+			}*/
 
 			// Items view panel.
-			if (!_selectingCategory)
+			if (_focusedList == _itemsList || _focusedList == _beastsList || _focusedList == _partyList)
 			{
 				rm.CurrentColor = (short)(0x06);
 				rm.RenderBox(32, 2, 54, 26);
@@ -77,11 +105,20 @@ namespace ConsoleGame.State
 				rm.RenderBox(29, 5, 6, 3);
 				rm.RenderString(31, 6, "->");
 
-				// Item boxes test.
-				rm.RenderBox(35, 3, 12, 6);
-				rm.RenderBox(47, 3, 12, 6);
-				rm.RenderBox(59, 3, 12, 6);
-				rm.RenderBox(71, 3, 12, 6);
+				if (_focusedList == _itemsList)
+				{
+
+				}
+				else if (_focusedList == _beastsList)
+				{
+					_beastsList.PosX = 33;
+					_beastsList.PosY = 3;
+					_beastsList.Render(rm);
+				}
+				else if (_focusedList == _partyList)
+				{
+
+				}
 			}
 
 			rm.Transform = true;
@@ -98,23 +135,27 @@ namespace ConsoleGame.State
 
 				// Navigation.
 				case ConsoleKey.UpArrow:
-					if (_selectingCategory)
-					{
-						if (_selectedCategory > 0) _selectedCategory--;
-					}
+					_focusedList.SelectPrevious();
 					break;
 				case ConsoleKey.DownArrow:
-					if (_selectingCategory)
-					{
-						if (_selectedCategory < _categories.Length - 1) _selectedCategory++;
-					}
+					_focusedList.SelectNext();
 					break;
 				case ConsoleKey.RightArrow:
-					_selectingCategory = false;
+					if (_focusedList == _categoriesList)
+					{
+						(string, object?)? nextList = _categoriesList.GetSelectedItem();
+						if (nextList?.Item2 != null)
+						{
+							_focusedList = (UIList)nextList?.Item2;
+							_focusedList.SelectedItemIndex = 0;
+						}
+					}
 					break;
-
 				case ConsoleKey.LeftArrow:
-					_selectingCategory = true;
+					if (_focusedList == _itemsList || _focusedList == _beastsList || _focusedList == _partyList)
+					{
+						_focusedList = _categoriesList;
+					}
 					break;
 			}
 		}
