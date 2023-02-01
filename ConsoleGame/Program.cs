@@ -11,10 +11,16 @@ namespace ConsoleGame
 		private static IState? _nextState;
 
 		public static bool _paused = false;
+		public static bool _wantsToExit = false;
 
 		public static void OpenScene(IState s)
 		{
 			_nextState = s;
+		}
+
+		public static void Exit()
+		{
+			_wantsToExit = true;
 		}
 
 		static void Main(string[] args)
@@ -40,7 +46,7 @@ namespace ConsoleGame
 			Win32.SetWindowLongA(consoleHwnd, Win32.GWL_STYLE, style);
 
 			// Game loop.
-			while (true)
+			while (!_wantsToExit)
 			{
 				// Key input.
 				while (Console.KeyAvailable)
