@@ -33,7 +33,7 @@ namespace ConsoleGame.State
 			),
 			new Menu.Option("Quit", 80, 16, false, () =>
 				{
-
+					Program.Exit();
 				}
 			)
 		};
