@@ -62,6 +62,7 @@ namespace ConsoleGame.State
 
 			rm.RenderString(2, 1, $"You have encountered a wild {_enemyBeast.Name}!");
 
+			// ----- UI Metrics -----
 			const int MARGIN = 6;
 			const int SPRITE_SIZE = 12;
 			const int SPRITE_RECTX0 = MARGIN;
@@ -69,27 +70,27 @@ namespace ConsoleGame.State
 			const int SPRITE_RECTW = SPRITE_SIZE * 2 + 2;
 			const int SPRITE_RECTH = SPRITE_SIZE + 2;
 
-			// Player Part.
+			// ----- Player Part -----
 			rm.RenderBox(SPRITE_RECTX0, SPRITE_RECTY, SPRITE_RECTW, SPRITE_RECTH);
 			rm.RenderString(MARGIN + 1, SPRITE_RECTY - 3, "Trucmuche");
 			rm.RenderString(MARGIN + 1, SPRITE_RECTY + SPRITE_RECTH + 1, "LVL 1");
 
-			// Enemy Part.
+			// ----- Enemy Part -----
 			rm.RenderBox(Console.WindowWidth - SPRITE_RECTW - MARGIN, SPRITE_RECTY, SPRITE_RECTW, SPRITE_RECTH);
 			rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY - 3, _enemyBeast.Name, RenderManager.TextAlign.RIGHT);
 			rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY + SPRITE_RECTH + 1, "LVL 1", RenderManager.TextAlign.RIGHT);
 
-			// Health bars.
+			// ----- Health bars -----
 			rm.CurrentColor = 0x7a;
 			rm.RenderHLine(MARGIN + 1, SPRITE_RECTY - 2, 26, '█');
 			rm.RenderHLine(Console.WindowWidth - SPRITE_RECTW - MARGIN - 1, SPRITE_RECTY - 2, 26, '█');
 
-			// Player's choice box.
+			// ----- Player's choice box -----
 			rm.CurrentColor = 0x0f;
 			rm.RenderBox(SPRITE_RECTX0 + SPRITE_RECTW, SPRITE_RECTY, SPRITE_RECTW, 20);
 			_menuCombatStart.Render(rm, SPRITE_RECTX0 + SPRITE_RECTW + 1, SPRITE_RECTY + 1, RenderManager.TextAlign.LEFT);
 
-			// Narration box.
+			// ----- Narration box -----
 			rm.CurrentColor = 0x0f;
 			rm.RenderBox(20, Console.WindowHeight - 5 - 1, 120, 5);
 
