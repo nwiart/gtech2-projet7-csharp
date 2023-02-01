@@ -24,21 +24,21 @@ namespace ConsoleGame.State
 		private static Menu.Option[] _menuOptionsCombatStart =
 		{
 			new Menu.Option("Choose Beast", 5, 0, false, () => {}),
-			new Menu.Option("Run Away", 5, 2, false, () => {})
+			new Menu.Option("Run Away", 5, 2, false, () => { Program.OpenScene(StateFreeRoam.Instance); })
 		};
 
-		private Menu _menuCombatStart = new Menu(_menuOptionsCombatStart);
+		private static Menu _menuCombatStart = new Menu(_menuOptionsCombatStart);
 
 
 
-		Beast? _playerBeast;
-		Beast? _enemyBeast;
+		Beast? _playerBeast = null;
+		Beast? _enemyBeast = null;
 
 		public void Enter()
 		{
 			Random randomNumber = new Random(); 
-			int x = randomNumber.Next(1, Beast.Bestiary.Count);
-			_enemyBeast = Beast.Bestiary.ElementAt(x).Value; /*?? throw new NullReferenceException(); */
+			//int x = randomNumber.Next(1, Beast.Bestiary.Count);
+			//enemyBeast = Beast.Bestiary.ElementAt(x).Value; /*?? throw new NullReferenceException(); */
 			// Needs to be assigned to a varaiable to be used in the render method
 		}
 
@@ -60,7 +60,8 @@ namespace ConsoleGame.State
 			// Base color.
 			rm.CurrentColor = 0x0f;
 
-			rm.RenderString(2, 1, $"You have encountered a wild {_enemyBeast.Name}!");
+			if (_enemyBeast != null)
+				rm.RenderString(2, 1, $"You have encountered a wild {_enemyBeast.Name}!");
 
 			// ----- UI Metrics -----
 			const int MARGIN = 6;
@@ -72,13 +73,19 @@ namespace ConsoleGame.State
 
 			// ----- Player Part -----
 			rm.RenderBox(SPRITE_RECTX0, SPRITE_RECTY, SPRITE_RECTW, SPRITE_RECTH);
-			rm.RenderString(MARGIN + 1, SPRITE_RECTY - 3, "Trucmuche");
-			rm.RenderString(MARGIN + 1, SPRITE_RECTY + SPRITE_RECTH + 1, "LVL 1");
+			if (_playerBeast != null)
+			{
+				rm.RenderString(MARGIN + 1, SPRITE_RECTY - 3, "Trucmuche");
+				rm.RenderString(MARGIN + 1, SPRITE_RECTY + SPRITE_RECTH + 1, "LVL 1");
+			}
 
 			// ----- Enemy Part -----
 			rm.RenderBox(Console.WindowWidth - SPRITE_RECTW - MARGIN, SPRITE_RECTY, SPRITE_RECTW, SPRITE_RECTH);
-			rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY - 3, _enemyBeast.Name, RenderManager.TextAlign.RIGHT);
-			rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY + SPRITE_RECTH + 1, "LVL 1", RenderManager.TextAlign.RIGHT);
+			if (_enemyBeast != null)
+			{
+				rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY - 3, _enemyBeast.Name, RenderManager.TextAlign.RIGHT);
+				rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY + SPRITE_RECTH + 1, "LVL 1", RenderManager.TextAlign.RIGHT);
+			}
 
 			// ----- Health bars -----
 			rm.CurrentColor = 0x7a;
