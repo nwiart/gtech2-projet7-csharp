@@ -6,21 +6,66 @@ using System.Threading.Tasks;
 
 namespace ConsoleGame.Inventory
 {
-	public class BeastItem
-	{
-		public Beast.Beast Beast { get; }
+    public class BeastItem
+    {
+        public enum ValuesPerLevel
+        {
+            Attack = 2,
+            Health = 5,
+            Defense = 1,
+            Mana = 2,
+        }
+        public Beast.Beast Beast { get; }
+        public int Attack { get; set; }
+        public int Level { get; set; }
+        public int Health { get; set; }
+        public int Mana { get; set; }
+        public int Defense { get; set; }
+        public int Experience { get; set; }
 
-		public int Health { get; set; }
-		public int Mana { get; set; }
+        public BeastItem(Beast.Beast b, int level)
+        {
+            Level = level;
+            if (level == 1)
+            {
+                // Set to basic species values.
+                Attack = b.Attack;
+                Health = b.MaxHealth;
+                Mana = b.MaxMana;
+                Defense = b.Defense;
+            }
+            else if (level > 1)
+            {
+                // Attack = (int)(ValuesAtLevel1.Attack + ((int)ValuesPerLevel.Attack * (level - 1)));
+                // Health = (int)(ValuesAtLevel1.MaxHealth + ((int)ValuesPerLevel.Health * (level - 1)));
+                // Defense = (int)(ValuesAtLevel1.Defense + ((int)ValuesPerLevel.Defense * (level - 1)));
 
-		public int Defense { get; set; }
+                // Species base values + growth values
+                Beast = b;
+                Attack = b.Attack + ((int)ValuesPerLevel.Attack * (level - 1));
+                Health = b.MaxHealth + ((int)ValuesPerLevel.Health * (level - 1));
+                Mana = b.MaxMana + ((int)ValuesPerLevel.Mana * (level - 1));
+                Defense = b.Defense + ((int)ValuesPerLevel.Defense * (level - 1));
+            }
+            
+        }
+        public void Evolve(Beast.Beast b)
+            {
+                if(Experience >= b.ExperienceToEvolve)
+                {
+                    Level++;
+                    Attack += (int)ValuesPerLevel.Attack;
+                    Health += (int)ValuesPerLevel.Health;
+                    Mana += (int)ValuesPerLevel.Mana;
+                    Defense += (int)ValuesPerLevel.Defense;
 
-		public BeastItem(Beast.Beast b)
-		{
-			Beast = b;
-			Health = b.MaxHealth;
-			Mana = b.MaxMana;
-			Defense = b.Defense;
-		}
-	}
+                    Experience -= b.ExperienceToEvolve;
+
+                }
+                else if (Experience < b.ExperienceToEvolve)
+                {
+                    throw new Exception("Not enough experience to evolve.");
+                }
+            }
+    }
 }
