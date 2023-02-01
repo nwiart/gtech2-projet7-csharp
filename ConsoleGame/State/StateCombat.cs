@@ -24,24 +24,23 @@ namespace ConsoleGame.State
         private static Menu.Option[] _menuOptionsCombatStart =
         {
             new Menu.Option("Choose Beast", 5, 0, false, () => {}),
-            new Menu.Option("Run Away", 5, 2, false, () => {})
+            new Menu.Option("Run Away", 5, 2, false, () => { Program.OpenScene(StateFreeRoam.Instance); })
         };
 
-        private Menu _menuCombatStart = new Menu(_menuOptionsCombatStart);
+        private static Menu _menuCombatStart = new Menu(_menuOptionsCombatStart);
 
 
 
-        Beast? _playerBeast;
-        Beast? _enemyBeast;
+        Beast? _playerBeast = null;
+        Beast? _enemyBeast = null;
 
         public void Enter()
         {
             Random randomNumber = new Random();
+            /* Assigning a random beast from the bestiary to the enemyBeast variable. */
             int x = randomNumber.Next(1, Beast.Bestiary.Count);
-            _enemyBeast = Beast.Bestiary.ElementAt(x).Value ?? throw new NullReferenceException(); 
-
-
-            
+            _enemyBeast = Beast.Bestiary.ElementAt(x).Value; /*?? throw new NullReferenceException(); */
+            // Needs to be assigned to a varaiable to be used in the render method
         }
 
         public void Leave()
@@ -53,6 +52,9 @@ namespace ConsoleGame.State
         {
             return null;
         }
+
+
+
 
         public void Render()
         {
