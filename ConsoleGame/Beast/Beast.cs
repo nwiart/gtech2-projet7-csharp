@@ -130,7 +130,7 @@ namespace ConsoleGame.Beast
         {
             public string Name { get; private set; }
             public int Damage { get; private set; }
-            public int Defense { get; private set; }
+            public int Defense { get; private set; }    
             public int Heal { get; private set; }
             public int ManaCost { get; private set; }
             public int Cooldown { get; private set; }

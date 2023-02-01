@@ -84,6 +84,7 @@ namespace ConsoleGame.State
 			rm.CurrentColor = 0x7a;
 			rm.RenderHLine(MARGIN + 1, SPRITE_RECTY - 2, 26, '█');
 			rm.RenderHLine(Console.WindowWidth - SPRITE_RECTW - MARGIN - 1, SPRITE_RECTY - 2, 26, '█');
+            rm.RenderString(Console.WindowWidth - 6, SPRITE_RECTY - 2, $"{_enemyBeast.ActualHealth.ToString()}/{_enemyBeast.MaxHealth.ToString()}");
 
 			// ----- Player's choice box -----
 			rm.CurrentColor = 0x0f;
@@ -107,10 +108,10 @@ namespace ConsoleGame.State
 				case ConsoleKey.DownArrow: _menuCombatStart.NavigateToNext(); break;
 
 				case ConsoleKey.Enter:     _menuCombatStart.CallSelectedOption(); break;
-                case ConsoleKey.A:
+                case ConsoleKey.E:
+                    Program.RenderManager.RenderString(20, Console.WindowHeight - 5 , $"The opponent {_enemyBeast.Name} used {_enemyBeast.capacityOfBeast[0].Name}!");
                     _enemyBeast.capacityOfBeast[0].UseCapacity(_enemyBeast, _enemyBeast);
-                    Console.WriteLine(_enemyBeast.capacityOfBeast[0].Name + " used");
-                    Console.WriteLine(_enemyBeast.ActualHealth);
+                    Console.WriteLine("did my part");
                     break;
 			}
 		}
