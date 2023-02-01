@@ -21,6 +21,7 @@ namespace ConsoleGame.Beast
 
         // Fiels of the Beasts
         public string Name { get; private set; }
+        public int Level { get; private set; }
         public int Attack { get; private set; }
         public int Defense { get; private set; }
         public int ActualHealth { get; private set; }
@@ -68,9 +69,9 @@ namespace ConsoleGame.Beast
             papiermachetteCapacity[0] = BITE;
             papiermachetteCapacity[1] = SCRATCH;
 
-            registerBeast("leggedthing", new Beast("Truc à Pats", 5, 5, 10, 10, 10, 10, leggedCapacity));
-            registerBeast("ambush", new Beast("Embuisscade", 10, 10, 10, 10, 10, 10, ambushCapacity));
-            registerBeast("papiermachette", new Beast("Origamonstre", 15, 15, 10, 10, 10, 10, papiermachetteCapacity));
+            registerBeast("leggedthing", new Beast("Truc à Pats", 1, 5, 5, 10, 10, 10, 10, leggedCapacity));
+            registerBeast("ambush", new Beast("Embuisscade", 1, 10, 10, 10, 10, 10, 10, ambushCapacity));
+            registerBeast("papiermachette", new Beast("Origamonstre", 1, 15, 15, 10, 10, 10, 10, papiermachetteCapacity));
 
 
             //  ---- Add Capacities to Capacity Lists ----
@@ -103,10 +104,11 @@ namespace ConsoleGame.Beast
         }
         public string? RegistryID { get; private set; }
 
-        Beast(string name, int attack, int defense, int actualHealth, int maxHealth, int actualMana, int manaMax, Capacity[] capacityOfBeast)
+        Beast(string name, int level,int attack, int defense, int actualHealth, int maxHealth, int actualMana, int manaMax, Capacity[] capacityOfBeast)
         {
             RegistryID = null;
             Name = name;
+            Level = level;
             Attack = attack;
             Defense = defense;
             ActualHealth = actualHealth;
@@ -170,6 +172,13 @@ namespace ConsoleGame.Beast
                     // launcher.Cooldown += Cooldown;
                 }
             }
+           
+
+           
+            public event Action OnUseCapacity;
+
+
+
 
         }
     }

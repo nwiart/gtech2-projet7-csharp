@@ -77,12 +77,12 @@ namespace ConsoleGame.State
             // ----- Player Part -----
             rm.RenderBox(SPRITE_RECTX0, SPRITE_RECTY, SPRITE_RECTW, SPRITE_RECTH);
             rm.RenderString(MARGIN + 1, SPRITE_RECTY - 3, "Trucmuche");
-            rm.RenderString(MARGIN + 1, SPRITE_RECTY + SPRITE_RECTH + 1, "LVL 1");
+            rm.RenderString(MARGIN + 1, SPRITE_RECTY + SPRITE_RECTH + 1, $"LVL {_enemyBeast.Level}");
 
             // ----- Enemy Part -----
             rm.RenderBox(Console.WindowWidth - SPRITE_RECTW - MARGIN, SPRITE_RECTY, SPRITE_RECTW, SPRITE_RECTH);
             rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY - 3, _enemyBeast.Name, RenderManager.TextAlign.RIGHT);
-            rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY + SPRITE_RECTH + 1, "LVL 1", RenderManager.TextAlign.RIGHT);
+            rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY + SPRITE_RECTH + 1, $"LVL {_enemyBeast.Level}", RenderManager.TextAlign.RIGHT);
 
             // ----- Health bars -----
             // Player
@@ -118,7 +118,6 @@ namespace ConsoleGame.State
                 case ConsoleKey.E:
                     Program.RenderManager.RenderString(20, Console.WindowHeight - 5, $"The opponent {_enemyBeast.Name} used {_enemyBeast.capacityOfBeast[0].Name}!");
                     _enemyBeast.capacityOfBeast[0].UseCapacity(_enemyBeast, _enemyBeast);
-                    Console.WriteLine("did my part");
                     break;
             }
         }
