@@ -9,68 +9,102 @@ using System.Threading.Tasks;
 
 namespace ConsoleGame.State
 {
-    using ConsoleGame.Beast;
-    internal class StateCombat : IState
-    {
-        public static StateCombat Instance { get; }
-        Beast? _playerBeast;
-        Beast? _enemyBeast;
+	using ConsoleGame.Beast;
+	internal class StateCombat : IState
+	{
+		public static StateCombat Instance { get; }
+
+		static StateCombat()
+		{
+			Instance = new StateCombat();
+		}
 
 
-        static StateCombat()
-        {
-            Instance = new StateCombat();
-        }
 
-        public void Enter()
-        {
-            Random randomNumber = new Random(); 
-            int x = randomNumber.Next(1, Beast.Bestiary.Count);
-            _enemyBeast = Beast.Bestiary.ElementAt(x).Value; /*?? throw new NullReferenceException(); */
-            // Needs to be assigned to a varaiable to be used in the render method
+		private static Menu.Option[] _menuOptionsCombatStart =
+		{
+			new Menu.Option("Choose Beast", 5, 0, false, () => {}),
+			new Menu.Option("Run Away", 5, 2, false, () => {})
+		};
+
+		private Menu _menuCombatStart = new Menu(_menuOptionsCombatStart);
 
 
-        }
 
-        public void Leave()
-        {
-            
-        }
+		Beast? _playerBeast;
+		Beast? _enemyBeast;
 
-        public IState? Update()
-        {
-            return null;
-        }
+		public void Enter()
+		{
+			Random randomNumber = new Random(); 
+			int x = randomNumber.Next(1, Beast.Bestiary.Count);
+			_enemyBeast = Beast.Bestiary.ElementAt(x).Value; /*?? throw new NullReferenceException(); */
+			// Needs to be assigned to a varaiable to be used in the render method
+		}
 
-        public void Render()
-        {
-            RenderManager? rm = Program.RenderManager;
-            rm.Transform = false;
+		public void Leave()
+		{
+			
+		}
 
-            rm.RenderString(2, 1, "You have encountered a wild ------!" + _enemyBeast.Name);
+		public IState? Update()
+		{
+			return null;
+		}
 
-            // Player Part
-            rm.RenderBox(6, 8, 28, 14);
-            rm.RenderString(6 + 1, 5, "Trucmuche");
+		public void Render()
+		{
+			RenderManager rm = Program.RenderManager;
+			rm.Transform = false;
 
-            // Enemy Part
-            rm.RenderBox(Console.WindowWidth - 28 - 6, 8, 28, 14);
-            rm.RenderString(Console.WindowWidth - 6 - 1, 5, _enemyBeast.Name, RenderManager.TextAlign.RIGHT);
+			// Base color.
+			rm.CurrentColor = 0x0f;
 
-            rm.CurrentColor = 0x7a;
-            rm.RenderHLine(6 + 1, 6, 26, '█');
-            rm.RenderHLine(Console.WindowWidth - 28 - 6 + 1, 6, 26, '█');
+			rm.RenderString(2, 1, $"You have encountered a wild {_enemyBeast.Name}!");
 
-            rm.CurrentColor = 0x0f;
-            rm.RenderBox(6 + 30, 4, 28, 20);
+			const int MARGIN = 6;
+			const int SPRITE_SIZE = 12;
+			const int SPRITE_RECTX0 = MARGIN;
+			const int SPRITE_RECTY = 8;
+			const int SPRITE_RECTW = SPRITE_SIZE * 2 + 2;
+			const int SPRITE_RECTH = SPRITE_SIZE + 2;
 
-            rm.Transform = true;
-        }
+			// Player Part.
+			rm.RenderBox(SPRITE_RECTX0, SPRITE_RECTY, SPRITE_RECTW, SPRITE_RECTH);
+			rm.RenderString(MARGIN + 1, SPRITE_RECTY - 3, "Trucmuche");
+			rm.RenderString(MARGIN + 1, SPRITE_RECTY + SPRITE_RECTH + 1, "LVL 1");
 
-        public void KeyPress(ConsoleKey key)
-        {
+			// Enemy Part.
+			rm.RenderBox(Console.WindowWidth - SPRITE_RECTW - MARGIN, SPRITE_RECTY, SPRITE_RECTW, SPRITE_RECTH);
+			rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY - 3, _enemyBeast.Name, RenderManager.TextAlign.RIGHT);
+			rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY + SPRITE_RECTH + 1, "LVL 1", RenderManager.TextAlign.RIGHT);
 
-        }
-    }
+			// Health bars.
+			rm.CurrentColor = 0x7a;
+			rm.RenderHLine(MARGIN + 1, SPRITE_RECTY - 2, 26, '█');
+			rm.RenderHLine(Console.WindowWidth - SPRITE_RECTW - MARGIN - 1, SPRITE_RECTY - 2, 26, '█');
 
+			// Player's choice box.
+			rm.CurrentColor = 0x0f;
+			rm.RenderBox(SPRITE_RECTX0 + SPRITE_RECTW, SPRITE_RECTY, SPRITE_RECTW, 20);
+			_menuCombatStart.Render(rm, SPRITE_RECTX0 + SPRITE_RECTW + 1, SPRITE_RECTY + 1, RenderManager.TextAlign.LEFT);
+
+			// Narration box.
+			rm.CurrentColor = 0x0f;
+			rm.RenderBox(20, Console.WindowHeight - 5 - 1, 120, 5);
+
+			rm.Transform = true;
+		}
+
+		public void KeyPress(ConsoleKey key)
+		{
+			switch (key)
+			{
+				case ConsoleKey.UpArrow:   _menuCombatStart.NavigateToPrevious(); break;
+				case ConsoleKey.DownArrow: _menuCombatStart.NavigateToNext(); break;
+
+				case ConsoleKey.Enter:     _menuCombatStart.CallSelectedOption(); break;
+			}
+		}
+	}
 }

@@ -52,8 +52,8 @@ namespace ConsoleGame
             {
                 Random randomNumber = new Random();
                 // 1% chance of spawning an enemy
-                int x = randomNumber.Next(1, 1000);
-                if (x < 10)
+                int x = randomNumber.Next(0, 100);
+                if (x == 0)
                 {
                     Program.OpenScene(StateCombat.Instance);
                 }
