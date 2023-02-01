@@ -23,9 +23,8 @@ namespace ConsoleGame.State
 		private static string[] _categories =
 		{
 			"Items",
-			"Potions",
+			"Beasts",
 			"Party",
-			"Specials"
 		};
 
 
@@ -78,10 +77,6 @@ namespace ConsoleGame.State
 				rm.RenderString(31, 6, "->");
 
 				// Item boxes test.
-				rm.RenderBox(35, 3, 12, 6);
-				rm.RenderBox(47, 3, 12, 6);
-				rm.RenderBox(59, 3, 12, 6);
-				rm.RenderBox(71, 3, 12, 6);
 			}
 
 			rm.Transform = true;

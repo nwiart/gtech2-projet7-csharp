@@ -2,10 +2,52 @@ namespace ConsoleGame.Inventory
 {
 	public class Inventory
 	{
+		private List<BeastItem> _beasts;
+		public IEnumerable<BeastItem> Beasts { get => _beasts; }
+
+		public static readonly int MAX_BEASTS_IN_PARTY = 4;
+		private BeastItem?[] _party = new BeastItem?[MAX_BEASTS_IN_PARTY];
+
 		public class InventorySlot
 		{
 			public Item? Item { get; set; }
 			public int Amount { get; set; }
+		}
+
+		public Inventory()
+		{
+			_beasts = new List<BeastItem>();
+		}
+
+
+		public void AddBeast(BeastItem bi)
+		{
+			_beasts.Add(bi);
+		}
+
+		public void AddBeastToParty(int partySlotIndex, int beastSlotIndex)
+		{
+			BeastItem? previous = _party[partySlotIndex];
+
+			// Move beast to party.
+			BeastItem bi = _beasts[beastSlotIndex];
+			_beasts.RemoveAt(beastSlotIndex);
+			_party[partySlotIndex] = bi;
+
+			// Move previous beast back to inventory (if there was one).
+			if (previous != null)
+				_beasts.Add(previous);
+		}
+
+		public void RemoveBeastFromParty(int index)
+		{
+			if (index < 0 || index >= MAX_BEASTS_IN_PARTY) throw new IndexOutOfRangeException();
+			if (_party[index] != null)
+			{
+				// Move beast to main inventory.
+				_beasts.Add(_party[index]);
+				_party[index] = null;
+			}
 		}
 	}
 
