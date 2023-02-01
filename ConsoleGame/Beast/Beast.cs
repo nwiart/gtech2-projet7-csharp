@@ -18,7 +18,7 @@ namespace ConsoleGame.Beast
 
 
 
-
+        // public static CapacityOfBeast { get { return _capacityOfBeast } }
 
         // Fiels of the Beasts
         public string Name { get; private set; }
@@ -28,7 +28,7 @@ namespace ConsoleGame.Beast
         public int MaxHealth { get; private set; }
         public int ActualMana { get; private set; }
         public int ManaMax { get; private set; }
-        public int MaxCapacity { get; private set; }
+        public Capacity[] capacityOfBeast { get; private set; }
 
         // Beast registration.
 
@@ -58,11 +58,24 @@ namespace ConsoleGame.Beast
 
             //  ---- Create Beasts ----
             //                            Name | Attack | Defense | ActualHealth | Maxhealth | Cooldown
+             
+             // create list of capacities for each beast
+            Capacity[] leggedCapacity = new Capacity[2];
+            leggedCapacity[0] = BITE;
+            leggedCapacity[1] = SCRATCH;
+
+            Capacity[] ambushCapacity = new Capacity[2];
+            ambushCapacity[0] = BITE;
+            ambushCapacity[1] = SCRATCH;
 
 
-            registerBeast("leggedthing", new Beast("Truc à Pats", 5, 5, 10, 10, 10, 10, capacityOfBeast: { BITE }));
-            registerBeast("ambush", new Beast("Embuisscade", 10, 10, 10, 10, 10, 10, ));
-            registerBeast("papiermachette", new Beast("Origamonstre", 15, 15, 10, 10, 10, 10, ));
+            Capacity[] papiermachetteCapacity = new Capacity[2];
+            papiermachetteCapacity[0] = BITE;
+            papiermachetteCapacity[1] = SCRATCH;
+
+            registerBeast("leggedthing", new Beast("Truc à Pats", 5, 5, 10, 10, 10, 10, leggedCapacity));
+            registerBeast("ambush", new Beast("Embuisscade", 10, 10, 10, 10, 10, 10, ambushCapacity));
+            registerBeast("papiermachette", new Beast("Origamonstre", 15, 15, 10, 10, 10, 10, papiermachetteCapacity));
 
 
             //  ---- Add Capacities to Capacity Lists ----
@@ -105,6 +118,7 @@ namespace ConsoleGame.Beast
             MaxHealth = maxHealth;
             ActualMana = actualMana;
             ManaMax = manaMax;
+            this.capacityOfBeast = capacityOfBeast;
         }
 
 
@@ -130,6 +144,22 @@ namespace ConsoleGame.Beast
                 ManaCost = manaCost;
                 Cooldown = cooldown;
             }
+
+            // create UseCapacity method
+            public void UseCapacity(Beast launcher, Beast target)
+            {
+                if (launcher.ActualMana >= ManaCost)
+                {
+                    launcher.ActualMana -= ManaCost;
+                    launcher.ActualHealth += Heal;
+                    launcher.Defense += Defense;
+                    
+                    target.ActualHealth -= Damage;
+                    // launcher.Attack += Damage;
+                    // launcher.Cooldown += Cooldown;
+                }
+            }
+            
         }
     }
 }

@@ -78,7 +78,9 @@ namespace ConsoleGame.State
             switch (key)
             {
                 case ConsoleKey.A:
-                    
+                    _enemyBeast.capacityOfBeast[0].UseCapacity(_enemyBeast, _enemyBeast);
+                    Console.WriteLine(_enemyBeast.capacityOfBeast[0].Name + " used");
+                    Console.WriteLine(_enemyBeast.ActualHealth);
                     break;
             }
         }
