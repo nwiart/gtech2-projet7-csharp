@@ -1,10 +1,13 @@
 ﻿using ConsoleGame;
+using ConsoleGame.Beast;
 
 namespace GameUnitTest
 {
     public class Tests
     {
         Map _map;
+        Beast _beast;
+        // Capacity _capacity;
         bool _spritesLoaded = false;
 
         [SetUp]
@@ -51,5 +54,26 @@ namespace GameUnitTest
         {
             Assert.That(_map.IsCollidable(x, y), Is.EqualTo(expected));
         }
+
+        bool _flag = false;
+        public void DetectDie()
+        {
+            _flag = true;
+        }
+        // [Test]
+        // Make a test for when a Beast Dies
+        // public void IsBeastDead(int i)
+        // {
+        //     Beast beast = new Beast("Test", 100, 100, 100, 100, 100, 100, _capacity._allCapacityList[0]);
+        //     // Arrange
+        //     _flag = false;
+        //     beast.OnDie += DetectDie;
+
+        //     // Action 
+        //     beast.Die();
+
+        //     Assert.IsTrue(_flag);
+        //     beast.OnDie -= DetectDie;
+        // }
     }
 }

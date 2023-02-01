@@ -107,21 +107,20 @@ namespace ConsoleGame.State
 
 			rm.Transform = true;
 		}
-		
 
-		public void KeyPress(ConsoleKey key)
-		{
-			switch (key)
-			{
-				case ConsoleKey.UpArrow:   _menuCombatStart.NavigateToPrevious(); break;
-				case ConsoleKey.DownArrow: _menuCombatStart.NavigateToNext(); break;
+        public void KeyPress(ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.UpArrow: _menuCombatStart.NavigateToPrevious(); break;
+                case ConsoleKey.DownArrow: _menuCombatStart.NavigateToNext(); break;
 
-				case ConsoleKey.Enter:     _menuCombatStart.CallSelectedOption(); break;
-				case ConsoleKey.E:
-					Program.RenderManager.RenderString(20, Console.WindowHeight - 5 , $"The opponent {_enemyBeast.Beast.Name} used {_enemyBeast.Beast.Capacities[0].Name}!");
-					_enemyBeast.Beast.Capacities[0].UseCapacity(_enemyBeast, _enemyBeast);
-					break;
-			}
-		}
-	}
+                case ConsoleKey.Enter: _menuCombatStart.CallSelectedOption(); break;
+                case ConsoleKey.E:
+                    Program.RenderManager.RenderString(20, Console.WindowHeight - 5, $"The opponent {_enemyBeast.Beast.Name} used {_enemyBeast.Beast.Capacities[0].Name}!");
+                    _enemyBeast.Beast.Capacities[0].UseCapacity(_enemyBeast, _enemyBeast);
+                    break;
+            }
+        }
+    }
 }
