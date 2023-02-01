@@ -58,6 +58,10 @@ namespace ConsoleGame.State
 			_level.SpawnEnemy();
 			switch (key)
 			{
+				case ConsoleKey.Escape:
+					Program.OpenScene(StatePaused.Instance);
+					break;
+
 				case ConsoleKey.E:
 					Program.OpenScene(StateInventory.Instance);
 					break;

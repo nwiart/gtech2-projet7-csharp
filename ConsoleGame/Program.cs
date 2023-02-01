@@ -44,19 +44,7 @@ namespace ConsoleGame
 				while (Console.KeyAvailable)
 				{
 					ConsoleKey key = Console.ReadKey().Key;
-					switch (key)
-					{
-						case ConsoleKey.Escape:
-							_paused = !_paused;
-							break;
-
-						default:
-							if (!_paused)
-							{
-								_currentState.KeyPress(key);
-							}
-							break;
-					}
+					_currentState.KeyPress(key);
 				}
 
                 _currentState.Update();

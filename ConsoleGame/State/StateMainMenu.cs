@@ -8,19 +8,43 @@ namespace ConsoleGame.State
 {
 	internal class StateMainMenu : IState
 	{
-		private int _option = 0;
+		private delegate void OptionCallback();
 
-		private (string, int, int, Func<bool>)[] _options =
+		private class Option
 		{
-			("Play", 10, 4, () =>
+			public string name;
+			public int posX;
+			public int posY;
+			public bool disabled;
+			public OptionCallback callback;
+
+			public Option(string name, int posX, int posY, bool disabled, OptionCallback callback)
+			{
+				this.name = name;
+				this.posX = posX;
+				this.posY = posY;
+				this.disabled = disabled;
+				this.callback = callback;
+			}
+		}
+
+		// Main menu options.
+		private int _option = 0;
+		private Option[] _options =
+		{
+			new Option("New Game", 80, 10, false, () =>
 				{
 					Program.OpenScene(StateFreeRoam.Instance);
-					return true;
 				}
 			),
-			("Quit", 10, 7, () =>
+			new Option("Load Saved Game", 80, 13, true, () =>
 				{
-					return true;
+					
+				}
+			),
+			new Option("Quit", 80, 16, false, () =>
+				{
+					
 				}
 			)
 		};
@@ -42,14 +66,16 @@ namespace ConsoleGame.State
 
 		public void Render()
 		{
+			RenderManager rm = Program.RenderManager;
+
 			foreach (var opt in _options)
 			{
-				Program.RenderManager.RenderString(opt.Item2, opt.Item3, opt.Item1);
+				rm.CurrentColor = (opt.disabled ? (short) 0x08 : (short) 0x07);
+				rm.RenderString(opt.posX, opt.posY, opt.name, RenderManager.TextAlign.CENTER);
 			}
+			rm.RenderString(66, _options[_option].posY, ">>>");
 
-			Program.RenderManager.RenderString(2, _options[_option].Item3, ">>>");
-
-			Program.RenderManager.RenderString(2, Console.WindowHeight - 2, "© 2023 ConsoleGame");
+			rm.RenderString(2, Console.WindowHeight - 2, "© 2023 ConsoleGame");
 		}
 
 		public void KeyPress(ConsoleKey key)
@@ -60,7 +86,8 @@ namespace ConsoleGame.State
 				case ConsoleKey.DownArrow: if ( _option < _options.Length - 1 ) _option++; break;
 
 				case ConsoleKey.Enter:
-					_options[_option].Item4();
+					if (!_options[_option].disabled)
+						_options[_option].callback();
 					break;
 			}
 		}
