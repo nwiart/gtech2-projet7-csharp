@@ -18,7 +18,9 @@ namespace ConsoleGame.State
 
 
 		private UIList _categoriesList = new UIList();
+		private UIList _itemsList  = new UIList();
 		private UIList _beastsList = new UIList();
+		private UIList _partyList  = new UIList();
 
 		private UIList _focusedList;
 
@@ -28,9 +30,9 @@ namespace ConsoleGame.State
 		{
 			_focusedList = _categoriesList;
 
-			_categoriesList.AddItem("Items", null);
+			_categoriesList.AddItem("Items",  _itemsList);
 			_categoriesList.AddItem("Beasts", _beastsList);
-			_categoriesList.AddItem("Party", null);
+			_categoriesList.AddItem("Party",  _partyList);
 		}
 
 		public void Enter()
@@ -40,11 +42,23 @@ namespace ConsoleGame.State
 
 			_categoriesList.SelectedItemIndex = 0;
 
+			_itemsList.Clear();
+			/*foreach (Inventory.BeastItem bi in Player.Instance.Inventory.Beasts)
+			{
+				_itemsList.AddItem($"{bi.Beast.Name} - LVL 1", bi);
+			}*/
+
 			_beastsList.Clear();
 			foreach (Inventory.BeastItem bi in Player.Instance.Inventory.Beasts)
 			{
 				_beastsList.AddItem($"{bi.Beast.Name} - LVL 1", bi);
 			}
+
+			_partyList.Clear();
+			/*foreach (Inventory.BeastItem bi in Player.Instance.Inventory.Beasts)
+			{
+				_partyList.AddItem($"{bi.Beast.Name} - LVL 1", bi);
+			}*/
 		}
 
 		public void Leave()
@@ -82,7 +96,7 @@ namespace ConsoleGame.State
 			}*/
 
 			// Items view panel.
-			if (_focusedList == _beastsList)
+			if (_focusedList == _itemsList || _focusedList == _beastsList || _focusedList == _partyList)
 			{
 				rm.CurrentColor = (short)(0x06);
 				rm.RenderBox(32, 2, 54, 26);
@@ -91,9 +105,20 @@ namespace ConsoleGame.State
 				rm.RenderBox(29, 5, 6, 3);
 				rm.RenderString(31, 6, "->");
 
-				_beastsList.PosX = 33;
-				_beastsList.PosY = 3;
-				_beastsList.Render(rm);
+				if (_focusedList == _itemsList)
+				{
+
+				}
+				else if (_focusedList == _beastsList)
+				{
+					_beastsList.PosX = 33;
+					_beastsList.PosY = 3;
+					_beastsList.Render(rm);
+				}
+				else if (_focusedList == _partyList)
+				{
+
+				}
 			}
 
 			rm.Transform = true;
@@ -118,11 +143,16 @@ namespace ConsoleGame.State
 				case ConsoleKey.RightArrow:
 					if (_focusedList == _categoriesList)
 					{
-						_focusedList = (UIList) _categoriesList.GetSelectedItem()?.Item2;
+						(string, object?)? nextList = _categoriesList.GetSelectedItem();
+						if (nextList?.Item2 != null)
+						{
+							_focusedList = (UIList)nextList?.Item2;
+							_focusedList.SelectedItemIndex = 0;
+						}
 					}
 					break;
 				case ConsoleKey.LeftArrow:
-					if (_focusedList == _beastsList)
+					if (_focusedList == _itemsList || _focusedList == _beastsList || _focusedList == _partyList)
 					{
 						_focusedList = _categoriesList;
 					}

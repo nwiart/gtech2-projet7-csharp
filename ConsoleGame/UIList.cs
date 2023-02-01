@@ -14,8 +14,10 @@ namespace ConsoleGame
 
 		private int _selectedItemIndex;
 		public int SelectedItemIndex { get => _selectedItemIndex; set {
-				if (value < -1 || value >= _itemStrings.Count) throw new IndexOutOfRangeException();
-				_selectedItemIndex = value;
+				if (value < -1 || value >= _itemStrings.Count)
+					_selectedItemIndex = -1;
+				else
+					_selectedItemIndex = value;
 			} }
 
 		// Items and user defined object.
