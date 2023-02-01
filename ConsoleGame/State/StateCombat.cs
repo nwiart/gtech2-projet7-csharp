@@ -21,28 +21,42 @@ namespace ConsoleGame.State
             Instance = new StateCombat();
         }
 
-
+        BeastItem? _playerBeast;
+        BeastItem? _enemyBeast = null;
 
         private static Menu.Option[] _menuOptionsCombatStart =
         {
-            new Menu.Option("Choose Beast", 5, 0, false, () => {}),
+            new Menu.Option("Choose Beast", 5, 0, false, () => { ChooseBeast(); }),
             new Menu.Option("Run Away", 5, 2, false, () => { Program.OpenScene(StateFreeRoam.Instance); })
         };
 
+        private static Menu.Option[] _menuOptionsCombat =
+        {
+            // FIXME: can't access _playerBeast
+            // new Menu.Option($"1. {_playerBeast.Beast.Capacities[0].Name}", 5, 0, false, () => { _playerBeast.Beast.Capacities[0].UseCapacity(_playerBeast, _enemyBeast); }),
+            // new Menu.Option($"2. {_playerBeast.Beast.Capacities[1].Name}", 5, 2, false, () => { _playerBeast.Beast.Capacities[1].UseCapacity(_playerBeast, _enemyBeast); }),
+            // new Menu.Option($"3. {_playerBeast.Beast.Capacities[2].Name}", 5, 4, false, () => { _playerBeast.Beast.Capacities[2].UseCapacity(_playerBeast, _enemyBeast); }),
+        };
+
+        static public void ChooseBeast()
+        {
+            //FIXME: needs to after being called, update the menu options to show the _menuOptionsCombat
+            BeastItem? _playerBeast = null;
+            _playerBeast = new BeastItem(Beast.GetBeastByID("leggedthing"), 4);
+        }
         private static Menu _menuCombatStart = new Menu(_menuOptionsCombatStart);
 
 
 
-        BeastItem? _playerBeast = null;
-        BeastItem? _enemyBeast = null;
+
 
         public void Enter()
         {
-            Random randomNumber = new Random();
-            Random randomLevel = new Random();
-            int y = randomLevel.Next(1, 6);
-            int x = randomNumber.Next(1, Beast.Bestiary.Count);
-            _enemyBeast = new BeastItem(Beast.Bestiary.ElementAt(x).Value, y); /*?? throw new NullReferenceException(); */
+            Random x = new Random();
+            Random y = new Random();
+            int randomLevel = y.Next(1, 6);
+            int randomNumber = x.Next(1, Beast.Bestiary.Count);
+            _enemyBeast = new BeastItem(Beast.Bestiary.ElementAt(randomNumber).Value, randomLevel); /*?? throw new NullReferenceException(); */
             // Needs to be assigned to a varaiable to be used in the render method
         }
 
@@ -79,7 +93,7 @@ namespace ConsoleGame.State
             rm.RenderBox(SPRITE_RECTX0, SPRITE_RECTY, SPRITE_RECTW, SPRITE_RECTH);
             if (_playerBeast != null)
             {
-                rm.RenderString(MARGIN + 1, SPRITE_RECTY - 3, "Trucmuche");
+                rm.RenderString(MARGIN + 1, SPRITE_RECTY - 3, $"{_playerBeast.Beast.Name}");
                 rm.RenderString(MARGIN + 1, SPRITE_RECTY + SPRITE_RECTH + 1, $"LVL {_playerBeast.Level}");
             }
 
@@ -99,10 +113,22 @@ namespace ConsoleGame.State
             rm.RenderString(Console.WindowWidth - 6, SPRITE_RECTY - 2, $"{_enemyBeast.Health.ToString()}/{_enemyBeast.GetMaxHealth().ToString()}");
 
             // ----- Player's choice box -----
-            rm.CurrentColor = 0x0f;
-            rm.RenderBox(SPRITE_RECTX0 + SPRITE_RECTW, SPRITE_RECTY, SPRITE_RECTW, 20);
-            _menuCombatStart.Render(rm, SPRITE_RECTX0 + SPRITE_RECTW + 1, SPRITE_RECTY + 1, RenderManager.TextAlign.LEFT);
+            if (_playerBeast == null)
+            {
+                rm.CurrentColor = 0x0f;
+                rm.RenderBox(SPRITE_RECTX0 + SPRITE_RECTW, SPRITE_RECTY, SPRITE_RECTW, 20);
+                _menuCombatStart.Render(rm, SPRITE_RECTX0 + SPRITE_RECTW + 1, SPRITE_RECTY + 1, RenderManager.TextAlign.LEFT);
 
+            }
+            else
+            {
+                rm.CurrentColor = 0x0f;
+                rm.RenderBox(SPRITE_RECTX0 + SPRITE_RECTW, SPRITE_RECTY, SPRITE_RECTW, 20);
+                rm.RenderString(SPRITE_RECTX0 + SPRITE_RECTW + 1, SPRITE_RECTY + 1, $"1. {_playerBeast.Beast.Capacities[0].Name}");
+                rm.RenderString(SPRITE_RECTX0 + SPRITE_RECTW + 1, SPRITE_RECTY + 2, $"2. {_playerBeast.Beast.Capacities[1].Name}");
+                rm.RenderString(SPRITE_RECTX0 + SPRITE_RECTW + 1, SPRITE_RECTY + 3, $"3. {_playerBeast.Beast.Capacities[1].Name}");
+                rm.RenderString(SPRITE_RECTX0 + SPRITE_RECTW + 1, SPRITE_RECTY + 4, $"4. {_playerBeast.Beast.Capacities[1].Name}");
+            }
 
             // ----- Narration box -----
             rm.CurrentColor = 0x0f;
@@ -121,7 +147,7 @@ namespace ConsoleGame.State
                 case ConsoleKey.Enter: _menuCombatStart.CallSelectedOption(); break;
                 case ConsoleKey.E:
                     Program.RenderManager.RenderString(20, Console.WindowHeight - 5, $"The opponent {_enemyBeast.Beast.Name} used {_enemyBeast.Beast.Capacities[0].Name}!");
-                    _enemyBeast.Beast.Capacities[0].UseCapacity(_enemyBeast, _enemyBeast);
+                    _playerBeast.Beast.Capacities[0].UseCapacity(_playerBeast, _enemyBeast);
                     if (_enemyBeast.Health <= 0)
                     {
                         // Say You won
