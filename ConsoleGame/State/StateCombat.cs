@@ -25,7 +25,7 @@ namespace ConsoleGame.State
         public void Enter()
         {
             Random randomNumber = new Random(); 
-            int x = randomNumber.Next(1, Beast.Bestiary.Count);
+            int x = randomNumber.Next(0, Beast.Bestiary.Count);
             _enemyBeast = Beast.Bestiary.ElementAt(x).Value; /*?? throw new NullReferenceException(); */
             // Needs to be assigned to a varaiable to be used in the render method
 
@@ -34,7 +34,7 @@ namespace ConsoleGame.State
 
         public void Leave()
         {
-            
+
         }
 
         public IState? Update()
@@ -47,19 +47,25 @@ namespace ConsoleGame.State
             RenderManager? rm = Program.RenderManager;
             rm.Transform = false;
 
-            rm.RenderString(2, 1, "You have encountered a wild ------!" + _enemyBeast.Name);
+            rm.RenderString(2, 1, "You have encountered a wild " + _enemyBeast.Name + " !");
 
-            // Player Part
+            // ---------- Player Part ----------
             rm.RenderBox(6, 8, 28, 14);
             rm.RenderString(6 + 1, 5, "Trucmuche");
 
-            // Enemy Part
+            // ---------- Enemy Part ----------
             rm.RenderBox(Console.WindowWidth - 28 - 6, 8, 28, 14);
             rm.RenderString(Console.WindowWidth - 6 - 1, 5, _enemyBeast.Name, RenderManager.TextAlign.RIGHT);
 
+
+            // ---------- HP Bars ----------
             rm.CurrentColor = 0x7a;
+            // Player HP Bar
             rm.RenderHLine(6 + 1, 6, 26, '█');
+
+            // Enemy HP Bar
             rm.RenderHLine(Console.WindowWidth - 28 - 6 + 1, 6, 26, '█');
+            rm.RenderString(Console.WindowWidth - 6 + 1, 6, _enemyBeast.ActualHealth.ToString() );
 
             rm.CurrentColor = 0x0f;
             rm.RenderBox(6 + 30, 4, 28, 20);
@@ -69,7 +75,12 @@ namespace ConsoleGame.State
 
         public void KeyPress(ConsoleKey key)
         {
-
+            switch (key)
+            {
+                case ConsoleKey.A:
+                    
+                    break;
+            }
         }
     }
 

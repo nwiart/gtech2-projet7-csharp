@@ -10,10 +10,15 @@ namespace ConsoleGame.Beast
     {
         // Beast registry, listing all beasts by their registry ID.
         private static Dictionary<string, Beast> _beastsByRegistryID;
+        public static Dictionary<string, Beast> Bestiary { get { return _beastsByRegistryID; } }
 
         // List of all capacities that Beast instances can access
-        List<Capacity> _capacityList = new List<Capacity>();
-        List<Capacity> CapacityList { get { return _capacityList; } }
+        private static List<Capacity> _capacityList = new List<Capacity>();
+        public static List<Capacity> CapacityList { get { return _capacityList; } }
+
+
+
+
 
         // Fiels of the Beasts
         public string Name { get; private set; }
@@ -24,21 +29,16 @@ namespace ConsoleGame.Beast
         public int ActualMana { get; private set; }
         public int ManaMax { get; private set; }
         public int MaxCapacity { get; private set; }
-        
-        // gettter for the entire Bestiary
-        
+
         // Beast registration.
-        public static Dictionary<string, Beast> Bestiary { get { return _beastsByRegistryID; } }
+
         static Beast()
         {
             _beastsByRegistryID = new Dictionary<string, Beast>();
 
 
-            //  ---- Create Beasts ----
-            //                            Name | Attack | Defense | ActualHealth | Maxhealth | Cooldown
-            registerBeast("leggedthing", new Beast("Truc à Pats", 5, 5, 10, 10, 10, 10, 2));
-            registerBeast("ambush", new Beast("Embuisscade", 10, 10, 10, 10, 10, 10, 2));
-            registerBeast("papiermachette", new Beast("Origamonstre", 15, 15, 10, 10, 10, 10, 2));
+
+
 
 
             //  ---- Create Capacities ----
@@ -55,6 +55,27 @@ namespace ConsoleGame.Beast
 
             // skip next turn (cooldown all capactities +1)
             Capacity STUN = new Capacity("Stun", 0, 0, 0, 0, 0, 0, 0);
+
+            //  ---- Create Beasts ----
+            //                            Name | Attack | Defense | ActualHealth | Maxhealth | Cooldown
+
+
+            registerBeast("leggedthing", new Beast("Truc à Pats", 5, 5, 10, 10, 10, 10, capacityOfBeast: { BITE }));
+            registerBeast("ambush", new Beast("Embuisscade", 10, 10, 10, 10, 10, 10, ));
+            registerBeast("papiermachette", new Beast("Origamonstre", 15, 15, 10, 10, 10, 10, ));
+
+
+            //  ---- Add Capacities to Capacity Lists ----
+            _capacityList.Add(BITE);
+            _capacityList.Add(SCRATCH);
+            _capacityList.Add(HEAL);
+            // _capacityList.Add(FIREBALL);
+            // _capacityList.Add(ICEBALL);
+            // _capacityList.Add(THUNDERBALL);
+            _capacityList.Add(JUMP);
+            _capacityList.Add(ARMOR_UP);
+            _capacityList.Add(ARMOR_DOWN);
+            // _capacityList.Add(STUN);
 
 
             // Add Capacities to Beast
@@ -74,7 +95,7 @@ namespace ConsoleGame.Beast
         }
         public string? RegistryID { get; private set; }
 
-        Beast(string name, int attack, int defense, int actualHealth, int maxHealth, int actualMana, int manaMax, int maxCapacity)
+        Beast(string name, int attack, int defense, int actualHealth, int maxHealth, int actualMana, int manaMax, Capacity[] capacityOfBeast)
         {
             RegistryID = null;
             Name = name;
@@ -84,8 +105,8 @@ namespace ConsoleGame.Beast
             MaxHealth = maxHealth;
             ActualMana = actualMana;
             ManaMax = manaMax;
-            MaxCapacity = maxCapacity;
         }
+
 
 
 

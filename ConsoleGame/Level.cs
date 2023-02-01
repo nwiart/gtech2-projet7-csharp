@@ -51,9 +51,9 @@ namespace ConsoleGame
             if (IsSpawnable(Program.RenderManager.CameraPosX, Program.RenderManager.CameraPosY))
             {
                 Random randomNumber = new Random();
-                // 1% chance of spawning an enemy
-                int x = randomNumber.Next(1, 1000);
-                if (x < 10)
+                // 50% chance of spawning an enemy
+                int x = randomNumber.Next(0, 1000);
+                if (x < 500)
                 {
                     Program.OpenScene(StateCombat.Instance);
                 }
