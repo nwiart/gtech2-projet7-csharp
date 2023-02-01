@@ -24,8 +24,10 @@ namespace ConsoleGame
 
 			RenderManager = new RenderManager(Console.WindowWidth, Console.WindowHeight);
 
-			_currentState = new StateMainMenu();
+			// Initialize state and emulate state entering in main menu.
+			_currentState = StateMainMenu.Instance;
 			_nextState = null;
+			_currentState.Enter();
 
 			Sprite.LoadSprites();
 

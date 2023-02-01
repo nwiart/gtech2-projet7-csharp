@@ -14,5 +14,21 @@ namespace ConsoleGame
 		{
 			return File.Exists(SAVE_FILENAME);
 		}
+
+		public static void LoadProgress()
+		{
+			using (FileStream f = new FileStream(SAVE_FILENAME, FileMode.Open))
+			{
+
+			}
+		}
+
+		public static void SaveProgress()
+		{
+			using (FileStream f = new FileStream(SAVE_FILENAME, FileMode.OpenOrCreate))
+			{
+				
+			}
+		}
 	}
 }

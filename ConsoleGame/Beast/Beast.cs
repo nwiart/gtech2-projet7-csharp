@@ -58,8 +58,8 @@ namespace ConsoleGame.Beast
 
             //  ---- Create Beasts ----
             //                            Name | Attack | Defense | ActualHealth | Maxhealth | Cooldown
-             
-             // create list of capacities for each beast
+
+            // create list of capacities for each beast
             Capacity[] leggedCapacity = new Capacity[2];
             leggedCapacity[0] = BITE;
             leggedCapacity[1] = SCRATCH;
@@ -153,13 +153,13 @@ namespace ConsoleGame.Beast
                     launcher.ActualMana -= ManaCost;
                     launcher.ActualHealth += Heal;
                     launcher.Defense += Defense;
-                    
+
                     target.ActualHealth -= Damage;
                     // launcher.Attack += Damage;
                     // launcher.Cooldown += Cooldown;
                 }
             }
-            
+
         }
     }
 }
