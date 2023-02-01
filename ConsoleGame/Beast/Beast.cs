@@ -13,12 +13,11 @@ namespace ConsoleGame.Beast
         public static Dictionary<string, Beast> Bestiary { get { return _beastsByRegistryID; } }
 
         // List of all capacities that Beast instances can access
-        private static List<Capacity> _capacityList = new List<Capacity>();
-        public static List<Capacity> CapacityList { get { return _capacityList; } }
+        private static List<Capacity> _allCapacityList = new List<Capacity>();
+        public static List<Capacity> AllCapacityList { get { return _allCapacityList; } }
 
 
 
-        // public static CapacityOfBeast { get { return _capacityOfBeast } }
 
         // Fiels of the Beasts
         public string Name { get; private set; }
@@ -37,24 +36,20 @@ namespace ConsoleGame.Beast
             _beastsByRegistryID = new Dictionary<string, Beast>();
 
 
-
-
-
-
             //  ---- Create Capacities ----
             //                            Name | Damage | Defense | Heal | ManaCost | Cooldown 
-            Capacity BITE = new Capacity("Bite", 7, 0, 0, 0, 0, 0, 0);
-            Capacity SCRATCH = new Capacity("Scratch", 5, 0, 0, 0, 0, 0, 0);
-            Capacity HEAL = new Capacity("Heal", 0, 0, 10, 0, 0, 0, 0);
+            Capacity BITE = new Capacity("Bite", 7, 0, 0, 0, 0, 0, 0, "Your Beast bite your enemy's Beast.");
+            Capacity SCRATCH = new Capacity("Scratch", 5, 0, 0, 0, 0, 0, 0, "Your Beast scratch your enemy's Beast.");
+            Capacity HEAL = new Capacity("Heal", 0, 0, 10, 0, 0, 0, 0, "Your Beast heal itself.");
             // Capacity FIREBALL = new Capacity("Fireball", 10, 0, 0, 10, 0, 0, 0);
             // Capacity ICEBALL = new Capacity("Iceball", 10, 0, 0, 10, 0, 0, 0);
             // Capacity THUNDERBALL = new Capacity("Thunderball", 10, 0, 0, 10, 0, 0, 0);
-            Capacity JUMP = new Capacity("Jump", 2, 0, 0, 0, 0, 0, 0);
-            Capacity ARMOR_UP = new Capacity("Armor Up", 0, 5, 0, 0, 0, 0, 0);
-            Capacity ARMOR_DOWN = new Capacity("Armor Down", 0, -5, 0, 0, 0, 0, 0);
+            Capacity JUMP = new Capacity("Jump", 2, 0, 0, 0, 0, 0, 0, "You jump on your enemy.");
+            Capacity DEFENSE_UP = new Capacity("Armor Up", 0, 5, 0, 0, 0, 0, 0, "You increase your Beast's defense.");
+            Capacity DEFENSE_DOWN = new Capacity("Armor Down", 0, -5, 0, 0, 0, 0, 0, "You decrease your opponent's Beast defense.");
 
             // skip next turn (cooldown all capactities +1)
-            Capacity STUN = new Capacity("Stun", 0, 0, 0, 0, 0, 0, 0);
+            Capacity STUN = new Capacity("Stun", 0, 0, 0, 0, 0, 0, 0, "Your enemy's Beast won't be able to use capacities next time.");
 
             //  ---- Create Beasts ----
             //                            Name | Attack | Defense | ActualHealth | Maxhealth | Cooldown
@@ -79,16 +74,16 @@ namespace ConsoleGame.Beast
 
 
             //  ---- Add Capacities to Capacity Lists ----
-            _capacityList.Add(BITE);
-            _capacityList.Add(SCRATCH);
-            _capacityList.Add(HEAL);
-            // _capacityList.Add(FIREBALL);
-            // _capacityList.Add(ICEBALL);
-            // _capacityList.Add(THUNDERBALL);
-            _capacityList.Add(JUMP);
-            _capacityList.Add(ARMOR_UP);
-            _capacityList.Add(ARMOR_DOWN);
-            // _capacityList.Add(STUN);
+            _allCapacityList.Add(BITE);
+            _allCapacityList.Add(SCRATCH);
+            _allCapacityList.Add(HEAL);
+            // _allCapacityList.Add(FIREBALL);
+            // _allCapacityList.Add(ICEBALL);
+            // _allCapacityList.Add(THUNDERBALL);
+            _allCapacityList.Add(JUMP);
+            _allCapacityList.Add(DEFENSE_UP);
+            _allCapacityList.Add(DEFENSE_DOWN);
+            // _allCapacityList.Add(STUN);
 
 
             // Add Capacities to Beast
@@ -122,7 +117,21 @@ namespace ConsoleGame.Beast
         }
 
 
+        // create method to check if beast is dead
+        public event Action OnDie;
 
+        public bool IsDead(int actualHealth)
+        {
+            if (actualHealth <= 0)
+            {
+                OnDie?.Invoke();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 
 
@@ -130,12 +139,13 @@ namespace ConsoleGame.Beast
         {
             public string Name { get; private set; }
             public int Damage { get; private set; }
-            public int Defense { get; private set; }    
+            public int Defense { get; private set; }
             public int Heal { get; private set; }
             public int ManaCost { get; private set; }
             public int Cooldown { get; private set; }
+            public string Description { get; private set; }
 
-            public Capacity(string name, int damage, int defense, int heal, int manaCost, int speed, int cost, int cooldown)
+            public Capacity(string name, int damage, int defense, int heal, int manaCost, int speed, int cost, int cooldown, string description)
             {
                 Name = name;
                 Damage = damage;
@@ -143,6 +153,7 @@ namespace ConsoleGame.Beast
                 Heal = heal;
                 ManaCost = manaCost;
                 Cooldown = cooldown;
+                Description = description;
             }
 
             // create UseCapacity method

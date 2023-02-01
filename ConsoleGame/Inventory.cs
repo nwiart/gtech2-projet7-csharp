@@ -22,6 +22,7 @@ namespace ConsoleGame
             Misc
         }
         public string? Name { get; private set; }
+        public char? Description { get; private set; }
         public int Value { get; private set; }
         public int Weight { get; private set; }
         public int Damage { get; private set; }
