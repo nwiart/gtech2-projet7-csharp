@@ -66,7 +66,7 @@ namespace ConsoleGame.Inventory
             Experience += exp;
             CheckEvolve();
         }
-        public void CheckEvolve()
+        public bool CheckEvolve()
         {
             if (Experience >= Beast.ExperienceToEvolve)
             {
@@ -83,8 +83,9 @@ namespace ConsoleGame.Inventory
                 Defense += (int)ValuesPerLevel.Defense;
 
                 Experience -= Beast.ExperienceToEvolve;
-
+                return true;
             }
+            else return false;
         }
 
         // make a Die fonction

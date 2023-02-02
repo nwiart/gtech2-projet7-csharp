@@ -9,7 +9,7 @@ namespace ConsoleGame.Beast
 {
     public class Beast
     {
-       
+
         // Beast registry, listing all beasts by their registry ID.
         private static Dictionary<string, Beast> _beastsByRegistryID;
         public static Dictionary<string, Beast> Bestiary { get { return _beastsByRegistryID; } }
@@ -29,6 +29,7 @@ namespace ConsoleGame.Beast
         public int MaxHealth { get; private set; }
         public int MaxMana { get; private set; }
         public int ExperienceToEvolve { get; private set; }
+        public int ExperienceDropped { get; private set; }
         public Capacity[] Capacities { get; private set; }
 
         // Beast registration.
@@ -58,15 +59,15 @@ namespace ConsoleGame.Beast
             //                            Name | Attack | Defense | ActualHealth | Maxhealth | Cooldown
 
             // create list of capacities for each beast
-            Capacity[] leggedCapacity = { BITE, SCRATCH , HEAL};
+            Capacity[] leggedCapacity = { BITE, SCRATCH, HEAL };
 
-            Capacity[] ambushCapacity = { BITE, SCRATCH , ARMOR_UP};
+            Capacity[] ambushCapacity = { BITE, SCRATCH, ARMOR_UP };
 
-            Capacity[] papiermachetteCapacity = { BITE, SCRATCH, ARMOR_DOWN, FIREBALL};
+            Capacity[] papiermachetteCapacity = { BITE, SCRATCH, ARMOR_UP, FIREBALL };
 
-            registerBeast("leggedthing",    new Beast("Truc à Pats",  20, 10, 5, 4, 20, leggedCapacity));
-            registerBeast("ambush",         new Beast("Embuisscade",  15, 10, 0, 6, 20, ambushCapacity));
-            registerBeast("papiermachette", new Beast("Origamonstre", 10, 10, 0, 6, 20, papiermachetteCapacity));
+            registerBeast("leggedthing", new Beast("Truc à Pats", 20, 10, 5, 4, 20, 20, leggedCapacity));
+            registerBeast("ambush", new Beast("Embuisscade", 15, 10, 0, 6, 20, 20, ambushCapacity));
+            registerBeast("papiermachette", new Beast("Origamonstre", 10, 10, 0, 6, 20, 20, papiermachetteCapacity));
 
 
             //  ---- Add Capacities to Capacity Lists ----
@@ -99,7 +100,7 @@ namespace ConsoleGame.Beast
         }
         public string? RegistryID { get; private set; }
 
-        Beast(string name, int attack, int maxHealth, int defense, int maxMana, int exp, Capacity[] capacities)
+        Beast(string name, int attack, int maxHealth, int defense, int maxMana, int exp, int expDropped, Capacity[] capacities)
         {
             RegistryID = null;
             Name = name;
@@ -108,6 +109,7 @@ namespace ConsoleGame.Beast
             Defense = defense;
             MaxMana = maxMana;
             ExperienceToEvolve = exp;
+            ExperienceDropped = expDropped;
             this.Capacities = capacities;
         }
 
@@ -137,12 +139,14 @@ namespace ConsoleGame.Beast
                 {
                     launcher.Mana -= ManaCost;
                     launcher.Health += Heal;
+                    if(launcher.Health > launcher.GetMaxHealth()) {launcher.Health = launcher.GetMaxHealth();}
+
                     launcher.Defense += Defense;
-                    if (target.Defense >= Damage)
+                    if (target.Defense >= Damage && Damage > 0)
                     {
                         target.Health -= 1;
                     }
-                    else
+                    else if (Damage > 0)
                     {
                         target.Health -= (Damage - target.Defense);
                     }
