@@ -18,9 +18,9 @@ namespace ConsoleGame.Inventory
 		public Inventory()
 		{
 			_beasts = new List<BeastItem>();
-			_beasts.Add(new BeastItem(Beast.Beast.GetBeastByID("papiermachette"), 2));
+			_beasts.Add(new BeastItem(Beast.Beast.GetBeastByID("papiermachette"), 4));
 			_beasts.Add(new BeastItem(Beast.Beast.GetBeastByID("leggedthing"), 3));
-			_beasts.Add(new BeastItem(Beast.Beast.GetBeastByID("ambush"), 1));
+			_beasts.Add(new BeastItem(Beast.Beast.GetBeastByID("ambush"), 3));
 
 			AddBeastToParty(0, 0);
 			AddBeastToParty(1, 0);

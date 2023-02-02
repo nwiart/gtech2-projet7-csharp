@@ -41,16 +41,16 @@ namespace ConsoleGame.Beast
 
 
             //  ---- Create Capacities ----
-            //                            Name | Damage | Defense | Heal | ManaCost | Cooldown 
-            Capacity BITE = new Capacity("Bite", 7, 0, 0, 0, 0, 0, 0);
-            Capacity SCRATCH = new Capacity("Scratch", 5, 0, 0, 0, 0, 0, 0);
-            Capacity HEAL = new Capacity("Heal", 0, 0, 10, 0, 0, 0, 0);
-            Capacity FIREBALL = new Capacity("Fireball", 10, 0, 0, 10, 0, 0, 0);
+            //                                   Name | Damage | Defense | Heal | ManaCost | Cooldown 
+            Capacity BITE =         new Capacity("Bite", 7, 0, 0, 0, 0, 0, 0);
+            Capacity SCRATCH =      new Capacity("Scratch", 5, 0, 0, 0, 0, 0, 0);
+            Capacity HEAL =         new Capacity("Heal", 0, 0, 10, 3, 0, 0, 0);
+            Capacity FIREBALL =     new Capacity("Fireball", 10, 0, 0, 5, 0, 0, 0);
             // Capacity ICEBALL = new Capacity("Iceball", 10, 0, 0, 10, 0, 0, 0);
             // Capacity THUNDERBALL = new Capacity("Thunderball", 10, 0, 0, 10, 0, 0, 0);
-            Capacity JUMP = new Capacity("Jump", 2, 0, 0, 0, 0, 0, 0);
-            Capacity ARMOR_UP = new Capacity("Armor Up", 0, 5, 0, 0, 0, 0, 0);
-            Capacity ARMOR_DOWN = new Capacity("Armor Down", 0, -5, 0, 0, 0, 0, 0);
+            Capacity JUMP =         new Capacity("Jump", 2, 0, 0, 0, 0, 0, 0);
+            Capacity ARMOR_UP =     new Capacity("Armor Up", 0, 2, 0, 2, 0, 0, 0);
+            Capacity ARMOR_DOWN =   new Capacity("Armor Down", 0, -2, 0, 2, 0, 0, 0);
 
             // skip next turn (cooldown all capactities +1)
             Capacity STUN = new Capacity("Stun", 0, 0, 0, 0, 0, 0, 0);
@@ -65,7 +65,7 @@ namespace ConsoleGame.Beast
 
             Capacity[] papiermachetteCapacity = { BITE, SCRATCH, ARMOR_UP, FIREBALL };
 
-            registerBeast("leggedthing", new Beast("Truc à Pats", 20, 10, 5, 4, 20, 20, leggedCapacity));
+            registerBeast("leggedthing", new Beast("Truc à Pats", 20, 10, 3, 4, 30, 20, leggedCapacity));
             registerBeast("ambush", new Beast("Embuisscade", 15, 10, 0, 6, 20, 20, ambushCapacity));
             registerBeast("papiermachette", new Beast("Origamonstre", 10, 10, 0, 6, 20, 20, papiermachetteCapacity));
 
@@ -142,6 +142,10 @@ namespace ConsoleGame.Beast
                     if(launcher.Health > launcher.GetMaxHealth()) {launcher.Health = launcher.GetMaxHealth();}
 
                     launcher.Defense += Defense;
+                    
+                    if(launcher.Defense <= 0) {launcher.Defense = 0;} // avoiding Defense to be negative
+                    if(target.Defense <= 0) {target.Defense = 0;} // avoiding Defense to be negative
+
                     if (target.Defense >= Damage && Damage > 0)
                     {
                         target.Health -= 1;

@@ -16,7 +16,7 @@ namespace ConsoleGame.Inventory
             Attack = 2,
             Health = 5,
             Defense = 1,
-            Mana = 2,
+            Mana = 3,
         }
         public Beast.Beast Beast { get; }
         public int Attack { get; set; }

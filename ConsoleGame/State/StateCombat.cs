@@ -216,21 +216,18 @@ namespace ConsoleGame.State
             }
             averageLevel /= Player.Instance.Inventory.Party.Count();
 
-            // int levelDifference = averageLevel - randomLevel;
-            // int valueToAssign = (int)(0.5f * randomLevel) - (levelDifference *2);
+     
 
 
-            int randomLevel = y.Next(averageLevel - 2, averageLevel + 7);
+            int randomLevel = y.Next(averageLevel - 1, averageLevel + 7);
             int randomNumber = x.Next(1, Beast.Bestiary.Count);
 
 
             int maxLevelPossible = randomLevel + 5;
-            // if (maxLevelPossible > 10)
-            //     maxLevelPossible = 10;
 
 
             _enemyBeast = new BeastItem(Beast.Bestiary.ElementAt(randomNumber).Value, (randomLevel)); /*?? throw new NullReferenceException(); */
-            // Needs to be assigned to a varaiable to be used in the render method
+            
 
             SetNarration($"You have encountered a wild {_enemyBeast.Beast.Name}!");
             SetCombatState(ECombatState.COMBAT_BEGIN);
@@ -258,7 +255,7 @@ namespace ConsoleGame.State
             const int MARGIN = 6;
             const int SPRITE_SIZE = 12;
             const int SPRITE_RECTX0 = MARGIN;
-            const int SPRITE_RECTY = 8;
+            const int SPRITE_RECTY = 10;
             const int SPRITE_RECTW = SPRITE_SIZE * 2 + 2;
             const int SPRITE_RECTH = SPRITE_SIZE + 2;
 
@@ -266,7 +263,7 @@ namespace ConsoleGame.State
             rm.RenderBox(SPRITE_RECTX0, SPRITE_RECTY, SPRITE_RECTW, SPRITE_RECTH);
             if (_playerBeast != null)
             {
-                rm.RenderString(MARGIN + 1, SPRITE_RECTY - 3, $"{_playerBeast.Beast.Name}");
+                rm.RenderString(MARGIN + 1, SPRITE_RECTY -5, $"{_playerBeast.Beast.Name}");
                 rm.RenderString(MARGIN + 1, SPRITE_RECTY + SPRITE_RECTH + 1, $"LVL {_playerBeast.Level}");
             }
 
@@ -274,7 +271,7 @@ namespace ConsoleGame.State
             rm.RenderBox(Console.WindowWidth - SPRITE_RECTW - MARGIN, SPRITE_RECTY, SPRITE_RECTW, SPRITE_RECTH);
             if (_enemyBeast != null)
             {
-                rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY - 3, _enemyBeast.Beast.Name, RenderManager.TextAlign.RIGHT);
+                rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY - 5, _enemyBeast.Beast.Name, RenderManager.TextAlign.RIGHT);
                 rm.RenderString(Console.WindowWidth - MARGIN - 1, SPRITE_RECTY + SPRITE_RECTH + 1, $"LVL {_enemyBeast.Level}", RenderManager.TextAlign.RIGHT);
             }
 
@@ -283,28 +280,68 @@ namespace ConsoleGame.State
             {
                 if (_playerBeast != null)
                 {
-                    rm.RenderHLine(MARGIN + 1, SPRITE_RECTY - 2, 26, ' ');
-                    rm.RenderHLine(MARGIN + 1, SPRITE_RECTY - 2, (int)(26 * (_playerBeast.Health / (float)_playerBeast.GetMaxHealth())), '█');
+                    rm.RenderHLine(MARGIN + 1, SPRITE_RECTY - 4, 26, ' ');
+                    rm.RenderHLine(MARGIN + 1, SPRITE_RECTY - 4, (int)(26 * (_playerBeast.Health / (float)_playerBeast.GetMaxHealth())), '█');
                 }
                 if (_enemyBeast != null)
                 {
-                    rm.RenderHLine(Console.WindowWidth - SPRITE_RECTW - MARGIN - 1, SPRITE_RECTY - 2, 26, ' ');
-                    rm.RenderHLine(Console.WindowWidth - SPRITE_RECTW - MARGIN - 1, SPRITE_RECTY - 2, (int)(26 * (_enemyBeast.Health / (float)_enemyBeast.GetMaxHealth())), '█');
+                    rm.RenderHLine(Console.WindowWidth - SPRITE_RECTW - MARGIN - 1, SPRITE_RECTY - 4, 26, ' ');
+                    rm.RenderHLine(Console.WindowWidth - SPRITE_RECTW - MARGIN - 1, SPRITE_RECTY - 4, (int)(26 * (_enemyBeast.Health / (float)_enemyBeast.GetMaxHealth())), '█');
                 }
             }
+
+            // ----- Mana bars -----
+            rm.CurrentColor = 0x89;
+            {
+                // Player Mana
+                if (_playerBeast != null)
+                {
+                    rm.RenderHLine(MARGIN + 1, SPRITE_RECTY - 2, 26, ' ');
+                    rm.RenderHLine(MARGIN + 1, SPRITE_RECTY - 2, (int)(26 * (_playerBeast.Mana / (float)_playerBeast.GetMaxMana())), '█');
+                }
+                // Enemy Mana
+                if (_enemyBeast != null)
+                {
+                    rm.RenderHLine(Console.WindowWidth - SPRITE_RECTW - MARGIN - 1, SPRITE_RECTY - 2, 26, ' ');
+                    rm.RenderHLine(Console.WindowWidth - SPRITE_RECTW - MARGIN - 1, SPRITE_RECTY - 2, (int)(26 * (_enemyBeast.Mana / (float)_enemyBeast.GetMaxMana())), '█');
+                }
+            }
+            // Health Values
             rm.CurrentColor = 0x0a;
             {
+                // Player health
                 if (_playerBeast != null)
-                    rm.RenderString(6, SPRITE_RECTY - 2, $"{_playerBeast.Health.ToString()}/{_playerBeast.GetMaxHealth().ToString()}", RenderManager.TextAlign.RIGHT);
+                    rm.RenderString(6, SPRITE_RECTY - 4, $"{_playerBeast.Health.ToString()}/{_playerBeast.GetMaxHealth().ToString()}", RenderManager.TextAlign.RIGHT);
                 if (_enemyBeast != null)
-                    rm.RenderString(Console.WindowWidth - 6, SPRITE_RECTY - 2, $"{_enemyBeast.Health.ToString()}/{_enemyBeast.GetMaxHealth().ToString()}");
+                    rm.RenderString(Console.WindowWidth - 6, SPRITE_RECTY - 4, $"{_enemyBeast.Health.ToString()}/{_enemyBeast.GetMaxHealth().ToString()}");
+                    
+                // Enemy health
+                if (_playerBeast != null)
+                    rm.RenderString(6, SPRITE_RECTY - 4, $"{_playerBeast.Health.ToString()}/{_playerBeast.GetMaxHealth().ToString()}", RenderManager.TextAlign.RIGHT);
+                if (_enemyBeast != null)
+                    rm.RenderString(Console.WindowWidth - 6, SPRITE_RECTY - 4, $"{_enemyBeast.Health.ToString()}/{_enemyBeast.GetMaxHealth().ToString()}");
+            }
+            // Mana Values
+            rm.CurrentColor = 0x09;
+            {
+                // Player mana
+                if (_playerBeast != null)
+                    rm.RenderString(6, SPRITE_RECTY - 2, $"{_playerBeast.Mana.ToString()}/{_playerBeast.GetMaxMana().ToString()}", RenderManager.TextAlign.RIGHT);
+                if (_enemyBeast != null)
+                    rm.RenderString(Console.WindowWidth - 6, SPRITE_RECTY - 2, $"{_enemyBeast.Mana.ToString()}/{_enemyBeast.GetMaxMana().ToString()}");
+                    
+                // Enemy mana
+                if (_playerBeast != null)
+                    rm.RenderString(6, SPRITE_RECTY - 2, $"{_playerBeast.Mana.ToString()}/{_playerBeast.GetMaxMana().ToString()}", RenderManager.TextAlign.RIGHT);
+                if (_enemyBeast != null)
+                    rm.RenderString(Console.WindowWidth - 6, SPRITE_RECTY - 2, $"{_enemyBeast.Mana.ToString()}/{_enemyBeast.GetMaxMana().ToString()}");
             }
 
             // ----- Player's choice box -----
             if (_focusedMenu != null)
             {
                 rm.CurrentColor = 0x0f;
-                rm.RenderBox(SPRITE_RECTX0 + SPRITE_RECTW, SPRITE_RECTY, SPRITE_RECTW, 10);
+                rm.RenderBox(SPRITE_RECTX0 + SPRITE_RECTW, SPRITE_RECTY , SPRITE_RECTW, 10);
                 _focusedMenu.Render(rm, SPRITE_RECTX0 + SPRITE_RECTW + 1, SPRITE_RECTY + 1, RenderManager.TextAlign.LEFT);
             }
 
