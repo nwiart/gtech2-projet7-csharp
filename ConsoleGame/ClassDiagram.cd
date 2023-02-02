@@ -3,7 +3,7 @@
   <Class Name="ConsoleGame.Program">
     <Position X="5" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAAAAAABBACABA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAoAAIAAABBACABE=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -45,14 +45,14 @@
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="ConsoleGame.Level" Collapsed="true">
-    <Position X="0.5" Y="6.75" Width="1.5" />
+    <Position X="0.5" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ABQAAAgAAAACAAAAAAEACAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
       <FileName>Level.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ConsoleGame.Map" Collapsed="true">
-    <Position X="2.25" Y="6.75" Width="1.5" />
+    <Position X="2.25" Y="7.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIAAgAIABAAgAQAAAAAAAEAAAAAAAAAAAAAAQAAAAJg=</HashCode>
       <FileName>Map.cs</FileName>
@@ -66,30 +66,30 @@
     </TypeIdentifier>
   </Class>
   <Class Name="ConsoleGame.Player" Collapsed="true">
-    <Position X="0.5" Y="7.75" Width="1.5" />
+    <Position X="0.5" Y="8.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAQwQAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAQAAAAAAAAAAAAAAAAQwQAAAAAAAAQAQAAAAgAAAAA=</HashCode>
       <FileName>Player.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ConsoleGame.Save" Collapsed="true">
-    <Position X="2.25" Y="7.75" Width="1.5" />
+    <Position X="2.25" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAgAAAAAAAAAAACAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Save.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ConsoleGame.Win32" Collapsed="true">
-    <Position X="0.5" Y="9.25" Width="1.5" />
+    <Position X="0.5" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAFAACAAAABAAAAUAAAAAAAAAAAAAAAAAAAAQAAkAgA=</HashCode>
+      <HashCode>QAFAACAAAABAAAAUAAAAAAAAAAAAAAABAAAAQAQkAgA=</HashCode>
       <FileName>Win32.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ConsoleGame.State.StateCombat" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="0.5" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAGEAAQEQBAAAQAgAAA=</HashCode>
+      <HashCode>AAQAAAAAAAGIAAgAAAAgCAAAAAGEAAQEYBAAAABAAAg=</HashCode>
       <FileName>State\StateCombat.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -97,7 +97,7 @@
   <Class Name="ConsoleGame.State.StateInventory" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="2.5" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CAQAAAAAAAAAQAAQAAAAAAAAAAEEAAQAQBAAAAAAAAA=</HashCode>
+      <HashCode>AAQABAAAAEAAAIABAAAAAAAAAgEEAAQAQBAAIAAAAAA=</HashCode>
       <FileName>State\StateInventory.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -113,14 +113,14 @@
   <Class Name="ConsoleGame.Inventory.BeastItem" Collapsed="true">
     <Position X="13" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAACAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAIgAAAAA=</HashCode>
+      <HashCode>AAIACAAAAAAAAQAAAAAAAAAAAIAAAEABAAAAIiIAQAA=</HashCode>
       <FileName>Inventory\BeastItem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ConsoleGame.Inventory.Inventory" Collapsed="true">
     <Position X="13" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAACAAAAAAQgAAABAAAAAEAAAAAAAIAAAAAAAEAA=</HashCode>
+      <HashCode>AEAAAACAAAAAAQgAAABAAAAAEAAAAAAAIAAAAAAAEAA=</HashCode>
       <FileName>Inventory\Inventory.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -134,9 +134,17 @@
   <Class Name="ConsoleGame.Beast.Beast" Collapsed="true">
     <Position X="15" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AABAAACAAAAICABAAAAAAAQAAIRAAAAoAAAAAgAAAAA=</HashCode>
+      <HashCode>AABAAACAAAAICABAAAAAAAQAAIRAAAAoAAAgAgAAAAA=</HashCode>
       <FileName>Beast\Beast.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="ConsoleGame.State.StateGameOver" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAEEAAQAABAAAAAAAAA=</HashCode>
+      <FileName>State\StateGameOver.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Interface Name="ConsoleGame.State.IState" Collapsed="true">
     <Position X="1.5" Y="2" Width="1.5" />

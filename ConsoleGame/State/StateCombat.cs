@@ -96,10 +96,10 @@ namespace ConsoleGame.State
 			if (_playerBeast.Health <= 0)
 			{
 				_nextStateCallback = () => {
-					SetCombatState(ECombatState.PLAYER_DIED);
 					SetNarration($"Your {_playerBeast.Beast.Name} has died!");
 					Player.Instance.Inventory.RemoveBeastFromParty(_playerBeast);
 					_playerBeast = null;
+					SetCombatState(ECombatState.PLAYER_DIED);
 				};
 			}
 			else
@@ -156,7 +156,21 @@ namespace ConsoleGame.State
 					break;
 
 				case ECombatState.PLAYER_DIED:
-					_nextStateCallback = () => { SetCombatState(ECombatState.COMBAT_BEGIN); };
+					_nextStateCallback = () => {
+						// Game over?
+						bool hasAliveBeast = false;
+						foreach (BeastItem? bi in Player.Instance.Inventory.Party)
+						{
+							if (bi != null)
+							{
+								hasAliveBeast = true;
+								break;
+							}
+						}
+
+						if (hasAliveBeast) SetCombatState(ECombatState.COMBAT_BEGIN);
+						else Program.OpenScene(StateGameOver.Instance);
+					};
 					break;
 				case ECombatState.ENEMY_DIED:
 					_nextStateCallback = () => { Program.OpenScene(StateFreeRoam.Instance); };
@@ -306,18 +320,6 @@ namespace ConsoleGame.State
 					else
 					{
 						_nextStateCallback();
-					}
-					break;
-				case ConsoleKey.E:
-					if (_enemyBeast.Health <= 0)
-					{
-						// Say You won
-						// gain exp for all the team
-						// Check Evolve for each beast
-					}
-					else
-					{
-						// Say WELCOME TO DARK SOULS
 					}
 					break;
 			}
