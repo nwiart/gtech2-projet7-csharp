@@ -8,6 +8,9 @@ namespace ConsoleGame.Inventory
 {
     public class BeastItem
     {
+        public delegate void OnDieCallback(BeastItem bi);
+        public event OnDieCallback OnDie;
+
         public enum ValuesPerLevel
         {
             Attack = 2,

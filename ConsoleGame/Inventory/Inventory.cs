@@ -46,6 +46,11 @@ namespace ConsoleGame.Inventory
 				_beasts.Add(previous);
 		}
 
+		public void RemoveBeastFromParty(BeastItem bi)
+		{
+			RemoveBeastFromParty(Array.IndexOf(_party, bi));
+		}
+
 		public void RemoveBeastFromParty(int index)
 		{
 			if (index < 0 || index >= MAX_BEASTS_IN_PARTY) throw new IndexOutOfRangeException();
