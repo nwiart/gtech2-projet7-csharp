@@ -22,6 +22,8 @@ namespace ConsoleGame.State
 		private UIList _beastsList = new UIList();
 		private UIList _partyList  = new UIList();
 
+		private UIList _beastsActions = new UIList();
+
 		private UIList _focusedList;
 
 
@@ -77,11 +79,17 @@ namespace ConsoleGame.State
 
 			rm.Transform = false;
 
+			// Title & controls.
+			rm.CurrentColor = 0x0f;
+			rm.RenderString(2, 1, "Inventory");
+
+			rm.RenderString(80, 40, "[Up, Down] : Navigate     [Right, Left] : Select / Go Back     [Enter] : Use     [E] : Exit Inventory", RenderManager.TextAlign.CENTER);
+
 			// Item categories.
 			_categoriesList.PosX = 5;
-			_categoriesList.PosY = 3;
+			_categoriesList.PosY = 4;
 			rm.CurrentColor = (short) (_focusedList == _categoriesList ? 0x06 : 0x0F);
-			rm.RenderBox(4, 2, 28, 9);
+			rm.RenderBox(4, 3, 28, 9);
 			_categoriesList.Render(rm);
 
 			/*rm.CurrentColor = 0x0f;
@@ -99,7 +107,7 @@ namespace ConsoleGame.State
 			if (_focusedList == _itemsList || _focusedList == _beastsList || _focusedList == _partyList)
 			{
 				rm.CurrentColor = (short)(0x06);
-				rm.RenderBox(32, 2, 54, 26);
+				rm.RenderBox(32, 4, 54, 26);
 				rm.CurrentColor = 0x0F;
 
 				rm.RenderBox(29, 5, 6, 3);
@@ -112,7 +120,7 @@ namespace ConsoleGame.State
 				else if (_focusedList == _beastsList)
 				{
 					_beastsList.PosX = 33;
-					_beastsList.PosY = 3;
+					_beastsList.PosY = 5;
 					_beastsList.Render(rm);
 				}
 				else if (_focusedList == _partyList)
@@ -149,6 +157,10 @@ namespace ConsoleGame.State
 							_focusedList = (UIList)nextList?.Item2;
 							_focusedList.SelectedItemIndex = 0;
 						}
+					}
+					else if (_focusedList == _beastsList)
+					{
+
 					}
 					break;
 				case ConsoleKey.LeftArrow:

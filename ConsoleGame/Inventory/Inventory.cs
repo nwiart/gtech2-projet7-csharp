@@ -7,6 +7,7 @@ namespace ConsoleGame.Inventory
 
 		public static readonly int MAX_BEASTS_IN_PARTY = 4;
 		private BeastItem?[] _party = new BeastItem?[MAX_BEASTS_IN_PARTY];
+		public BeastItem?[] Party { get => _party; }
 
 		public class InventorySlot
 		{
@@ -20,6 +21,9 @@ namespace ConsoleGame.Inventory
 			_beasts.Add(new BeastItem(Beast.Beast.GetBeastByID("papiermachette"), 2));
 			_beasts.Add(new BeastItem(Beast.Beast.GetBeastByID("leggedthing"), 3));
 			_beasts.Add(new BeastItem(Beast.Beast.GetBeastByID("ambush"), 1));
+
+			AddBeastToParty(0, 0);
+			AddBeastToParty(1, 0);
 		}
 
 
