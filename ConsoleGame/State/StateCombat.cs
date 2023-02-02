@@ -150,17 +150,37 @@ namespace ConsoleGame.State
 
 
 		public void Enter()
-		{
-			Random x = new Random();
-			Random y = new Random();
-			int randomLevel = y.Next(1, 6);
-			int randomNumber = x.Next(1, Beast.Bestiary.Count);
-			_enemyBeast = new BeastItem(Beast.Bestiary.ElementAt(randomNumber).Value, randomLevel); /*?? throw new NullReferenceException(); */
-			// Needs to be assigned to a varaiable to be used in the render method
+        {
+            Random x = new Random();
+            Random y = new Random();
 
-			SetNarration($"You have encountered a wild {_enemyBeast.Beast.Name}!");
-			SetCombatState(ECombatState.COMBAT_BEGIN);
-		}
+             int averageLevel = 0;
+            foreach (BeastItem? b in Player.Instance.Inventory.Party)
+            {
+                if (b != null)
+                    averageLevel += b.Level;
+            }
+            averageLevel /= Player.Instance.Inventory.Party.Count();
+
+            // int levelDifference = averageLevel - randomLevel;
+            // int valueToAssign = (int)(0.5f * randomLevel) - (levelDifference *2);
+
+
+            int randomLevel = y.Next(averageLevel - 2, averageLevel + 7);
+            int randomNumber = x.Next(1, Beast.Bestiary.Count);
+
+            
+            int maxLevelPossible = randomLevel + 5;
+            // if (maxLevelPossible > 10)
+            //     maxLevelPossible = 10;
+            
+
+            _enemyBeast = new BeastItem(Beast.Bestiary.ElementAt(randomNumber).Value, (randomLevel)); /*?? throw new NullReferenceException(); */
+            // Needs to be assigned to a varaiable to be used in the render method
+
+            SetNarration($"You have encountered a wild {_enemyBeast.Beast.Name}!");
+            SetCombatState(ECombatState.COMBAT_BEGIN);
+        }
 
 		public void Leave()
 		{
