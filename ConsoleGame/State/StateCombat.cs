@@ -22,7 +22,10 @@ namespace ConsoleGame.State
 			CHOOSE_ATTACK,
 
 			PLAYER_ATTACK,
-			ENEMY_ATTACK
+			ENEMY_ATTACK,
+
+			PLAYER_DIED,
+			ENEMY_DIED
 		}
 
 		public static StateCombat Instance { get; }
@@ -41,13 +44,6 @@ namespace ConsoleGame.State
 
 		ECombatState _state;
 		Menu.OptionCallback _nextStateCallback;
-
-		private static Menu.Option[] _menuOptionsActions =
-		{
-			new Menu.Option("Attack", 5, 0, false, () => { }),
-			new Menu.Option("Switch Beast", 5, 2, false, () => { }),
-			new Menu.Option("Run Away", 5, 4, false, () => { }),
-		};
 
 		public void ChooseBeast(BeastItem b)
 		{
@@ -73,6 +69,16 @@ namespace ConsoleGame.State
 			Program.ShakeIntensity = 15.0F;
 
 			SetNarration($"{_playerBeast.Beast.Name} used {c.Name}!");
+
+			// Enemy has died.
+			if (_enemyBeast.Health <= 0)
+			{
+				_nextStateCallback = () => {
+					SetCombatState(ECombatState.ENEMY_DIED);
+					SetNarration($"{_enemyBeast.Beast.Name} has died!");
+					_enemyBeast = null;
+				};
+			}
 		}
 		public void EnemyAttack()
 		{
@@ -85,6 +91,21 @@ namespace ConsoleGame.State
 			Program.ShakeIntensity = 15.0F;
 
 			SetNarration($"{_enemyBeast.Beast.Name} used {c.Name}!");
+
+			// Player's beast died.
+			if (_playerBeast.Health <= 0)
+			{
+				_nextStateCallback = () => {
+					SetCombatState(ECombatState.PLAYER_DIED);
+					SetNarration($"Your {_playerBeast.Beast.Name} has died!");
+					Player.Instance.Inventory.RemoveBeastFromParty(_playerBeast);
+					_playerBeast = null;
+				};
+			}
+			else
+			{
+				_nextStateCallback = () => { SetCombatState(ECombatState.CHOOSE_ACTION); };
+			}
 		}
 
 		public void SetCombatState(ECombatState s)
@@ -113,6 +134,7 @@ namespace ConsoleGame.State
 					break;
 
 				case ECombatState.CHOOSE_ACTION:
+					SetNarration("");
 					options.Add(new Menu.Option("Attack", 5, posY, false, () => { SetCombatState(ECombatState.CHOOSE_ATTACK); })); posY += 2;
 					options.Add(new Menu.Option("Switch Beast", 5, posY, false, () => { SetCombatState(ECombatState.CHOOSE_BEAST); })); posY += 2;
 					options.Add(new Menu.Option("Run Away", 5, posY, false, () => { RunAway(); })); posY += 2;
@@ -121,7 +143,8 @@ namespace ConsoleGame.State
 				case ECombatState.CHOOSE_ATTACK:
 					foreach (Beast.Capacity capacity in _playerBeast.Beast.Capacities)
 					{
-						options.Add(new Menu.Option(capacity.Name, 5, posY, false, () => { PlayerAttack(capacity); }));
+						bool enoughMana = (_playerBeast.Mana >= capacity.ManaCost);
+						options.Add(new Menu.Option(capacity.Name, 5, posY, !enoughMana, () => { PlayerAttack(capacity); }));
 						posY += 2;
 					}
 					break;
@@ -130,7 +153,13 @@ namespace ConsoleGame.State
 					_nextStateCallback = () => { EnemyAttack(); };
 					break;
 				case ECombatState.ENEMY_ATTACK:
-					_nextStateCallback = () => { SetCombatState(ECombatState.CHOOSE_ACTION); };
+					break;
+
+				case ECombatState.PLAYER_DIED:
+					_nextStateCallback = () => { SetCombatState(ECombatState.COMBAT_BEGIN); };
+					break;
+				case ECombatState.ENEMY_DIED:
+					_nextStateCallback = () => { Program.OpenScene(StateFreeRoam.Instance); };
 					break;
 			}
 
@@ -155,8 +184,9 @@ namespace ConsoleGame.State
 			Random y = new Random();
 			int randomLevel = y.Next(1, 6);
 			int randomNumber = x.Next(1, Beast.Bestiary.Count);
-			_enemyBeast = new BeastItem(Beast.Bestiary.ElementAt(randomNumber).Value, randomLevel); /*?? throw new NullReferenceException(); */
-			// Needs to be assigned to a varaiable to be used in the render method
+			_enemyBeast = new BeastItem(Beast.Bestiary.ElementAt(randomNumber).Value, randomLevel);
+
+			_playerBeast = null;
 
 			SetNarration($"You have encountered a wild {_enemyBeast.Beast.Name}!");
 			SetCombatState(ECombatState.COMBAT_BEGIN);
