@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace ConsoleGame.Inventory
 {
 	public class Inventory

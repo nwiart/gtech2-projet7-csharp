@@ -20,14 +20,14 @@ namespace ConsoleGame
 		{
 			using (FileStream file = File.OpenRead(SAVE_FILENAME))
 			{
-				Player.Instance.Inventory = JsonSerializer.Deserialize<Inventory.Inventory>(file);
+				Inventory.Inventory i = JsonSerializer.Deserialize<Inventory.Inventory>(file);
+				Player.Instance.Inventory = i;
 			}
 		}
 
 		public static void SaveProgress()
 		{
-			JsonSerializerOptions opt = new JsonSerializerOptions();
-			opt.WriteIndented = true;
+			JsonSerializerOptions opt = JsonSerializerOptions.Default;
 
 			string s = JsonSerializer.Serialize(Player.Instance.Inventory, opt);
 			File.WriteAllText(SAVE_FILENAME, s);
