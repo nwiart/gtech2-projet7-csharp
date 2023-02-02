@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ConsoleGame
@@ -17,18 +18,19 @@ namespace ConsoleGame
 
 		public static void LoadProgress()
 		{
-			using (FileStream f = new FileStream(SAVE_FILENAME, FileMode.Open))
+			using (FileStream file = File.OpenRead(SAVE_FILENAME))
 			{
-
+				Player.Instance.Inventory = JsonSerializer.Deserialize<Inventory.Inventory>(file);
 			}
 		}
 
 		public static void SaveProgress()
 		{
-			using (FileStream f = new FileStream(SAVE_FILENAME, FileMode.OpenOrCreate))
-			{
-				
-			}
+			JsonSerializerOptions opt = new JsonSerializerOptions();
+			opt.WriteIndented = true;
+
+			string s = JsonSerializer.Serialize(Player.Instance.Inventory, opt);
+			File.WriteAllText(SAVE_FILENAME, s);
 		}
 	}
 }

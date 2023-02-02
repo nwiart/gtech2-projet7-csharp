@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ConsoleGame.Inventory
@@ -18,7 +19,12 @@ namespace ConsoleGame.Inventory
             Defense = 1,
             Mana = 3,
         }
+
+        [JsonIgnore]
         public Beast.Beast Beast { get; }
+
+        public string BeastID { get => Beast.RegistryID; }
+
         public int Attack { get; set; }
         public int Level { get; set; }
         public int Health { get; set; }

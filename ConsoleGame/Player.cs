@@ -4,14 +4,18 @@ namespace ConsoleGame
     {
         public static Player Instance { get; private set; }
 
+        static Player()
+        {
+            Instance = new Player();
+        }
+
         private Level? _level;
-        public Inventory.Inventory Inventory { get; private set; }
+        public Inventory.Inventory Inventory { get; set; }
         public int PosX { get; set; }
         public int PosY { get; set; }
 
         public Player()
         {
-            Instance = this;
             Inventory = new Inventory.Inventory();
         }
 

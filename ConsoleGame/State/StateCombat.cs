@@ -226,8 +226,9 @@ namespace ConsoleGame.State
             int maxLevelPossible = randomLevel + 5;
 
 
-            _enemyBeast = new BeastItem(Beast.Bestiary.ElementAt(randomNumber).Value, (randomLevel)); /*?? throw new NullReferenceException(); */
-            
+            _enemyBeast = new BeastItem(Beast.Bestiary.ElementAt(randomNumber).Value, (randomLevel));
+
+			_playerBeast = null;
 
             SetNarration($"You have encountered a wild {_enemyBeast.Beast.Name}!");
             SetCombatState(ECombatState.COMBAT_BEGIN);

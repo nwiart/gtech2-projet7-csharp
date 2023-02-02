@@ -7,10 +7,11 @@ namespace ConsoleGame
     public class Level
     {
         Map _mapLevel = new Map();
-        Player _player = new Player();
+        Player _player;
 
         public Level()
         {
+            _player = Player.Instance;
             _player.SetLevel(this);
         }
 
