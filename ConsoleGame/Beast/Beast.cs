@@ -9,24 +9,7 @@ namespace ConsoleGame.Beast
 {
     public class Beast
     {
-
-        public enum ValuesAtLevel1
-        {
-            Attack = 5,
-            MaxHealth = 15,
-            Defense = 3,
-            MaxMana = 8,
-        }
-
-        public enum ValuesPerLevel
-        {
-            Attack = 2,
-            Health = 5,
-            Defense = 1,
-            Mana = 2,
-        }
-
-
+       
         // Beast registry, listing all beasts by their registry ID.
         private static Dictionary<string, Beast> _beastsByRegistryID;
         public static Dictionary<string, Beast> Bestiary { get { return _beastsByRegistryID; } }

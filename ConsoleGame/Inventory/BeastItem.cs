@@ -54,6 +54,10 @@ namespace ConsoleGame.Inventory
         {
             return (Beast.MaxHealth + ((int)ValuesPerLevel.Health * (Level - 1)));
         }
+        public int GetMaxMana()
+        {
+            return (Beast.MaxMana + ((int)ValuesPerLevel.Mana * (Level - 1)));
+        }
         public void GainExperience(int exp)
         {
             Experience += exp;
@@ -65,8 +69,14 @@ namespace ConsoleGame.Inventory
             {
                 Level++;
                 Attack += (int)ValuesPerLevel.Attack;
-                Health += (int)ValuesPerLevel.Health;
-                Mana += (int)ValuesPerLevel.Mana;
+                // Health part
+
+                // Health += (int)ValuesPerLevel.Health;
+                Health = GetMaxHealth();
+                // Mana part
+
+                // Mana += (int)ValuesPerLevel.Mana;
+                Mana = GetMaxMana();
                 Defense += (int)ValuesPerLevel.Defense;
 
                 Experience -= Beast.ExperienceToEvolve;
@@ -75,7 +85,7 @@ namespace ConsoleGame.Inventory
         }
 
         // make a Die fonction
-        
+
     }
 
 }
