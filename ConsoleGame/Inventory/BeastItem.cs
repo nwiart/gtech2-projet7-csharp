@@ -60,10 +60,11 @@ namespace ConsoleGame.Inventory
         public void GainExperience(int exp)
         {
             Experience += exp;
+            CheckEvolve();
         }
-        public void CheckEvolve(Beast.Beast b)
+        public void CheckEvolve()
         {
-            if (Experience >= b.ExperienceToEvolve)
+            if (Experience >= Beast.ExperienceToEvolve)
             {
                 Level++;
                 Attack += (int)ValuesPerLevel.Attack;
@@ -71,7 +72,7 @@ namespace ConsoleGame.Inventory
                 Mana += (int)ValuesPerLevel.Mana;
                 Defense += (int)ValuesPerLevel.Defense;
 
-                Experience -= b.ExperienceToEvolve;
+                Experience -= Beast.ExperienceToEvolve;
 
             }
         }

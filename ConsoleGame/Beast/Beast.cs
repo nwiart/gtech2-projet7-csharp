@@ -61,7 +61,7 @@ namespace ConsoleGame.Beast
             Capacity BITE = new Capacity("Bite", 7, 0, 0, 0, 0, 0, 0);
             Capacity SCRATCH = new Capacity("Scratch", 5, 0, 0, 0, 0, 0, 0);
             Capacity HEAL = new Capacity("Heal", 0, 0, 10, 0, 0, 0, 0);
-            // Capacity FIREBALL = new Capacity("Fireball", 10, 0, 0, 10, 0, 0, 0);
+            Capacity FIREBALL = new Capacity("Fireball", 10, 0, 0, 10, 0, 0, 0);
             // Capacity ICEBALL = new Capacity("Iceball", 10, 0, 0, 10, 0, 0, 0);
             // Capacity THUNDERBALL = new Capacity("Thunderball", 10, 0, 0, 10, 0, 0, 0);
             Capacity JUMP = new Capacity("Jump", 2, 0, 0, 0, 0, 0, 0);
@@ -75,14 +75,14 @@ namespace ConsoleGame.Beast
             //                            Name | Attack | Defense | ActualHealth | Maxhealth | Cooldown
 
             // create list of capacities for each beast
-            Capacity[] leggedCapacity = { BITE, SCRATCH };
+            Capacity[] leggedCapacity = { BITE, SCRATCH , HEAL};
 
-            Capacity[] ambushCapacity = { BITE, SCRATCH };
+            Capacity[] ambushCapacity = { BITE, SCRATCH , ARMOR_UP};
 
-            Capacity[] papiermachetteCapacity = { BITE, SCRATCH };
+            Capacity[] papiermachetteCapacity = { BITE, SCRATCH, ARMOR_DOWN, FIREBALL};
 
-            registerBeast("leggedthing", new Beast("Truc à Pats", 20, 10, 5 , 4, 20, leggedCapacity));
-            registerBeast("ambush", new Beast("Embuisscade", 15, 10, 0, 6, 20, ambushCapacity));
+            registerBeast("leggedthing",    new Beast("Truc à Pats",  20, 10, 5, 4, 20, leggedCapacity));
+            registerBeast("ambush",         new Beast("Embuisscade",  15, 10, 0, 6, 20, ambushCapacity));
             registerBeast("papiermachette", new Beast("Origamonstre", 10, 10, 0, 6, 20, papiermachetteCapacity));
 
 
@@ -90,7 +90,7 @@ namespace ConsoleGame.Beast
             _capacityList.Add(BITE);
             _capacityList.Add(SCRATCH);
             _capacityList.Add(HEAL);
-            // _capacityList.Add(FIREBALL);
+            _capacityList.Add(FIREBALL);
             // _capacityList.Add(ICEBALL);
             // _capacityList.Add(THUNDERBALL);
             _capacityList.Add(JUMP);
@@ -148,21 +148,32 @@ namespace ConsoleGame.Beast
             }
 
             // create UseCapacity method
-            public void UseCapacity(BeastItem launcher, BeastItem target)
+            public bool UseCapacity(BeastItem launcher, BeastItem target)
             {
                 if (launcher.Mana >= ManaCost)
                 {
                     launcher.Mana -= ManaCost;
                     launcher.Health += Heal;
                     launcher.Defense += Defense;
-
-                    target.Health -= Damage;
+                    if (target.Defense >= Damage)
+                    {
+                        target.Health -= 1;
+                    }
+                    else
+                    {
+                        target.Health -= (Damage - target.Defense);
+                    }
                     // launcher.Attack += Damage;
                     // launcher.Cooldown += Cooldown;
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
 
-            
+
         }
     }
 }
