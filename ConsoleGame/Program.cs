@@ -13,6 +13,8 @@ namespace ConsoleGame
 		public static bool _paused = false;
 		public static bool _wantsToExit = false;
 
+		public static float ShakeIntensity { get; set; }
+
 		public static void OpenScene(IState s)
 		{
 			_nextState = s;
@@ -45,6 +47,10 @@ namespace ConsoleGame
 			style = style & ~(Win32.WS_MAXIMIZEBOX | Win32.WS_THICKFRAME);
 			Win32.SetWindowLongA(consoleHwnd, Win32.GWL_STYLE, style);
 
+			ShakeIntensity = 0.0F;
+			Win32.SetWindowPos(consoleHwnd, IntPtr.Zero, 100, 100, 0, 0, Win32.SWP_NOSIZE);
+			Random random = new Random();
+
 			// Game loop.
 			while (!_wantsToExit)
 			{
@@ -55,7 +61,10 @@ namespace ConsoleGame
 					_currentState.KeyPress(key);
 				}
 
-                _currentState.Update();
+				ShakeIntensity /= 1.1F;
+				Win32.SetWindowPos(consoleHwnd, IntPtr.Zero, 100 + (int)(random.Next(-1, 1) * ShakeIntensity), 100 + (int)(random.Next(-1, 1) * ShakeIntensity), 0, 0, Win32.SWP_NOSIZE);
+
+				_currentState.Update();
 
 				// Render.
 				RenderManager.Clear();

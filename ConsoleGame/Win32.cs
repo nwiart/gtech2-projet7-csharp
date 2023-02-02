@@ -14,6 +14,8 @@ namespace ConsoleGame
 		public static readonly int WS_MAXIMIZEBOX = 0x00010000;
 		public static readonly int WS_THICKFRAME = 0x00040000;
 
+		public static readonly int SWP_NOSIZE = 0x0001;
+
 		public struct COORD
 		{
 			short x;
@@ -48,5 +50,8 @@ namespace ConsoleGame
 
 		[DllImport("user32.dll")]
 		public static extern int SetWindowLongA(IntPtr hWnd, int nIndex, int dwNewLong);
+
+		[DllImport("user32.dll")]
+		public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, int uFlags);
 	}
 }
