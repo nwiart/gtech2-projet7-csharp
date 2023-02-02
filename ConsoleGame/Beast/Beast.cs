@@ -81,7 +81,7 @@ namespace ConsoleGame.Beast
 
             Capacity[] papiermachetteCapacity = { BITE, SCRATCH };
 
-            registerBeast("leggedthing", new Beast("Truc à Pats", 20, 10, 5 , 4, 20, leggedCapacity));
+            registerBeast("leggedthing", new Beast("Truc à Pats", 20, 10, 5, 4, 20, leggedCapacity));
             registerBeast("ambush", new Beast("Embuisscade", 15, 10, 0, 6, 20, ambushCapacity));
             registerBeast("papiermachette", new Beast("Origamonstre", 10, 10, 0, 6, 20, papiermachetteCapacity));
 
@@ -148,7 +148,7 @@ namespace ConsoleGame.Beast
             }
 
             // create UseCapacity method
-            public void UseCapacity(BeastItem launcher, BeastItem target)
+            public bool UseCapacity(BeastItem launcher, BeastItem target)
             {
                 if (launcher.Mana >= ManaCost)
                 {
@@ -156,13 +156,18 @@ namespace ConsoleGame.Beast
                     launcher.Health += Heal;
                     launcher.Defense += Defense;
 
-                    target.Health -= Damage;
+                    target.Health -= (Damage - target.Defense);
                     // launcher.Attack += Damage;
                     // launcher.Cooldown += Cooldown;
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
 
-            
+
         }
     }
 }
