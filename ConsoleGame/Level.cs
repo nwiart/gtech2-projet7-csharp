@@ -54,7 +54,6 @@ namespace ConsoleGame
                 Random randomNumber = new Random();
 
                 // 5% chance of spawning an enemy
-                
                 int x = randomNumber.Next(0, 100);
                 if (x < 5)
                 {
